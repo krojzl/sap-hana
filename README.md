@@ -1,5 +1,15 @@
 # Reference Architecture for SAP HANA
 
+<!-- TOC -->
+
+- [Reference Architecture for SAP HANA](#reference-architecture-for-sap-hana)
+  - [Objective](#objective)
+  - [Approach](#approach)
+  - [Table of Content](#table-of-content)
+  - [Contributing](#contributing)
+
+<!-- /TOC -->
+
 ## Objective
 
 SAP HANA database is offering many different options how to design the infrastructure.
@@ -30,20 +40,34 @@ Basic steps are following:
 
 ## Table of Content
 
-* [Change Log](CHANGELOG.md)
-* [How to Contribute](CONTRIBUTING.md)
+- [Change Log](CHANGELOG.md#change-log)
+- [How to Contribute](CONTRIBUTING.md#how-to-contribute)
 
-1. Requirements
-2. Architectural Decisions
-3. Infrastructure Architecture
-4. Simplified versions of Infrastructure Architecture
-5. Platform specific implementations
-   * IaaS Cloud: AWS
-   * IaaS Cloud: Azure
-   * IaaS Cloud: GCP
-   * On-premise: VMware
-   * On-premise: Bare Metal
+1. [Requirements](pages/requirements.md#requirements)
+2. [Architectural Decisions](pages/architectural_decisions.md#architectural-decisions)
+3. Generic SAP HANA Architecture
+   - [Overall Architecture and Modularity](pages/generic_architecture/overall_architecture.md#overall-architecture-and-modularity)
+   - [Module: Basic Architecture](pages/generic_architecture/module_basic_architecture.md#module-basic-architecture)
+   - [Module: Virtual Hostname/IP](pages/generic_architecture/module_virtual_hostname.md#module-virtual-hostnameip)
+   - [Module: High Availability](pages/generic_architecture/module_high_availability.md#module-high-availability)
+   - [Module: Disaster Recovery](pages/generic_architecture/module_disaster_recovery.md#module-disaster-recovery)
+   - [Module: Data Tiering Options](pages/generic_architecture/module_data_tiering.md#module-data-tiering-options)
+   - [Module: XSA (SAP HANA extended application services, advanced model)](pages/generic_architecture/module_xsa.md#module-xsa-sap-hana-extended-application-services-advanced-model)
+   - [Alternative Implementations](pages/generic_architecture/alternative_implementations.md#alternative-implementations)
+4. Platform Specific Architecture
+   - [IaaS Cloud: AWS](pages/platform_specific_architecture/iaas_cloud_aws.md#aws-overall-architecture)
+   - [IaaS Cloud: Azure](pages/platform_specific_architecture/iaas_cloud_azure.md#azure-overall-architecture)
+   - IaaS Cloud: IBM Cloud
+   - On-premise: VMware
+5. Operational Procedures
+   - High Availability Takeover Process
+   - Disaster Recovery Takeover Process
+   - Tenant Relocation
+   - Instance Relocation
+6. Additional Information
+   - SAP HANA: Stacking Options (MCOD, MCOS, MDC)
+   - SAP HANA: Certificate setup
 
 ## Contributing
 
-Please refer to [How to Contribute](CONTRIBUTING.md) to understand how to contribute to this project.
+Please refer to [How to Contribute](CONTRIBUTING.md#how-to-contribute) to understand how to contribute to this project.

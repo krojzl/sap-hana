@@ -997,9 +997,9 @@ SAP is dividing the data based on the aging characteristics of the data and freq
   - Dynamic Random Access Memory (DRAM)
   - Persistent Memory (Non-Volatile Random Access Memory - NVRAM)
 - Warm Data
-  - Native Storage Extensions (NSE)
-  - Extension Nodes
-  - Dynamic Tiering (DT)
+  - SAP HANA Native Storage Extensions (NSE)
+  - SAP HANA Extension Nodes
+  - SAP HANA Dynamic Tiering (DT)
 - Cold Data
   - SAP Data Hub / SAP Data Intelligence
   - SAP HANA Spark Controller (Hadoop)
@@ -1049,6 +1049,8 @@ By using "Buffer Cache" that is significanly smaller than size of data in "Disk 
 
 SAP HANA Native Storage Extension feature is supported since SAP HANA 2.0 SP04 and is limited only to Single-node SAP HANA Systems. Please note other functional restrictions as mentioned in [SAP Note 2771956: SAP HANA Native Storage Extension Functional Restrictions](https://launchpad.support.sap.com/#/notes/2771956).
 
+Additional Information:
+
 - [Administration Guide: SAP HANA Native Storage Extension](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/4efaa94f8057425c8c7021da6fc2ddf5.html)
 - [SAP HANA Native Storage Extension Whitepaper](https://www.sap.com/documents/2019/09/4475a0dd-637d-0010-87a3-c30de2ffd8ff.html)
 - [SAP Note 2799997: FAQ: SAP HANA Native Storage Extension (NSE)](https://launchpad.support.sap.com/#/notes/2799997)
@@ -1069,15 +1071,47 @@ SAP HANA Extension Nodes are supported since SAP HANA 1.0 SP12 (for BW scenario)
 
 For SAP BW scenarios the hardware used for SAP HANA Extention Nodes can differ compared to other worker nodes starting from SAP HANA 2.0 SP03. For native scenarios this is supported from SAP HANA 2.0 SP4.
 
+Additional Information:
+
 - [Administration Guide: Extension Node](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/e285ac03529a4cc9ab2d73206d2e8eca.html)
 - [Administration Guide: Redistributing Tables in a Scaleout SAP HANA System](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/c6579b60d9761014ae59c8c868e6e054.html)
 - [More Details – HANA Extension Nodes for BW-on-HANA](http://scn.sap.com/community/bw-hana/blog/2016/04/26/more-details--hana-extension-nodes-for-bw-on-hana)
 
 ## SAP HANA Dynamic Tiering (DT)
 
-Not possible in combination with Pacemaker Clustering
+SAP HANA Dynamic Tiering (DT) is optional add-on for SAP HANA database to manage warm data. Behind the scenes it is SAP IQ database that was modified and integrated into SAP HANA to act as new type of SAP HANA database process `esserver`. Since SAP IQ is based on "Disk Based Column Store", SAP HANA Dynamic Tiering database process (`esserver`) is offering very similar capabilities like SAP HANA in-memory database process (`indexserver`) with reduced memory requirements and reduced performance.
 
-https://help.sap.com/viewer/product/SAP_HANA_DYNAMIC_TIERING/2.00.04/en-US
+Although SAP HANA Dynamic Tiering is based on different database, the integration effort is ensuring that Dynamic Tiering node is embedded into SAP HANA operational processes like Start/Stop, Backup/Recovery and System Replication making it sub-component of SAP HANA database. Therefore, SAP HANA Dynamic Tiering cannot be operated independently from SAP HANA.
+
+SAP HANA Dynamic Tiering database process (`esserver`) is typically deployed on dedicated host as part of SAP HANA Scale-Out scenario, however, there is option to co-deploy it on same host as SAP HANA in-memory database process (`indexserver`) for Single-Node scenario.
+
+However there are still several limitations that need to be taken into consideration when deploying SAP HANA Dynamic Tiering. These limitations include:
+
+- Since SAP IQ is not having concept of Multitenant Database Containers (MDC), each SAP HANA Tenant Database using Dynamic Tiering needs its own dedicated SAP HANA Dynamic Tiering database process (`esserver`)
+- However, for Single-Node deployment scenario only, just one Dynamic Tiering database process (`esserver`) can be co-deployed on same host as SAP HANA in-memory database process (`indexserver`). Additional Dynamic Tiering database processes (associated with additional Tenant Databases) must be deployed on dedicated hosts - this is effectively turning the architecture into Scale-Out like (multi-host) deployment
+- SAP HANA Dynamic Tiering component itself is not "Scale-Out enabled", that means one SAP HANA Tenant Database cannot distribute data across multiple Dynamic Tiering database processes (`esserver`) - the Dynamic Tiering host must be sized properly to be able to support complete volume of the warm data for given Database Tenant
+- Be sure to also review following restrictions when using Dynamic Tiering:
+  - [Administration Guide: Extended Store Table Functional Restrictions](https://help.sap.com/viewer/269740c67eca42a3b4ffbd376b406fbe/2.00.04/en-US/e277bd261b04467eba3a4dfd892e7c84.html)
+  - [Administration Guide: Multistore Table Functional Restriction](https://help.sap.com/viewer/269740c67eca42a3b4ffbd376b406fbe/2.00.04/en-US/6fe9676ec5ff47d2a527d3f60c3858a3.html)
+  - [Installation and Update Guide: SAP HANA Landscape Functional Restrictions](https://help.sap.com/viewer/88f82e0d010e4da1bc8963f18346f46e/2.00.04/en-US/ddc2f2a4f47c4253b302d349293bd422.html)
+  - PDF document attached to [SAP Note 2767107: SAP HANA Dynamic Tiering Support for SAP HANA System Replication](https://launchpad.support.sap.com/#/notes/2767107)
+  - [SAP Note 2375865: SAP HANA Dynamic Tiering 2.0: Backup and Recovery Functional Restriction](https://launchpad.support.sap.com/#/notes/2375865)
+
+Basic deployment options are described in [Installation and Update Guide: SAP HANA Dynamic Tiering Architecture](https://help.sap.com/viewer/88f82e0d010e4da1bc8963f18346f46e/2.00.04/en-US/615434cb3f8c435a8dd5fc0cba2042f9.html).
+
+Until SAP HANA Dynamic Tiering 2.0 SP04 there was no support for Cluster Manager - therefore High Availability using Pacemaker Cluster was not supported. Because this is recently released feature, this version of SAP HANA Reference Architecture is not yet supporting SAP HANA Dynamic Tiering. The support will be included in future versions based on detailed examination of functional restrictions mentioned above.
+
+In order to move the data to Dynamic Tiering node SAP introduced concept of Extended Store Tables and Multistore Tables:
+
+- [Administration Guide: Extended Store Tables](https://help.sap.com/viewer/269740c67eca42a3b4ffbd376b406fbe/2.00.04/en-US/de8f5b63a91546e6b0d5bcec709761cb.html) are tables that fully reside in Dynamic Tiering "Disk Based Column Store" (`esserver`)
+- [Administration Guide: Multistore Tables](https://help.sap.com/viewer/269740c67eca42a3b4ffbd376b406fbe/2.00.04/en-US/5fcabacef9f34ce4b4c2f2e0ad8e8808.html) are tables that can have some partitions on SAP HANA "In-Memory Column Store" (`indexserver`) and other partitions on Dynamic Tiering "Disk Based Column Store" (`esserver`)
+
+These new database table types are well explained and visualized in following blog: [A Closer Look at SAP HANA Dynamic Tiering for Warm Data Management](https://blogs.saphana.com/2018/09/18/a-closer-look-at-sap-hana-dynamic-tiering-for-warm-data-management).
+
+Additional Information:
+
+- [SAP HANA Dynamic Tiering Landing Page](https://help.sap.com/viewer/product/SAP_HANA_DYNAMIC_TIERING/2.00.04/en-US)
+
 # Module: XSA (SAP HANA extended application services, advanced model)
 
 Description

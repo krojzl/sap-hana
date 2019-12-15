@@ -24,7 +24,7 @@ Architecture of SAP XSA is introducing new host roles:
 - `xs_worker` for active SAP XSA host running XSA applications
 - `xs_standby` not used as part of this Reference Architecture - it is used only in case of SAP Host Auto-Failover High Availability option (as documented in section [Alternative Implementations](alternative_implementations.md#alternative-implementations))
 
-These roles can be assigned automatically (each SAP HANA database `worker` host is assigned SAP XSA `xs_worker` role) or manually (only selected hosts are assigned `xs_worker` role or there can even be dedicate `xs_worker` host).
+These roles can be assigned automatically (each SAP HANA database `worker` host is assigned SAP XSA `xs_worker` role) or manually (only selected hosts are assigned `xs_worker` role or there can even be dedicated `xs_worker` host).
 
 Additional Information:
 
@@ -69,9 +69,9 @@ XSA Platform Router is central entry point for all XSA applications. In case of 
 
 Note that XSA Platform Router (`xscontroller` service) can run on different host, other than host where Active Nameserver service (associated with Cluster IP) is running. So additional Cluster IP dedicated for XSA Platform Router would be required to support High Availability scenario.
 
-Different approach is usage of Failover Router (external SAP Web Dispatcher) acting as Reverse Proxy dispatching the XSA requestes to XSA Platform Router running on currently active SAP HANA System.
+Different approach is usage of Failover Router (external SAP Web Dispatcher) acting as Reverse Proxy dispatching the XSA requests to XSA Platform Router running on currently active SAP HANA System.
 
-This Reference Architecture is based on external Highly Available SAP Web Dispatcher protected by its own Pacemaker Cluster. This SAP Web Dispatcher can be shared for multiple SAP HANA systems and since it will act as "Single Point of Entry" it will make "Tenant Move" operation more easy to execute.
+This Reference Architecture is based on external Highly Available SAP Web Dispatcher protected by its own Pacemaker Cluster. This SAP Web Dispatcher can be shared for multiple SAP HANA systems and since it will act as "Single Point of Entry" it will make "Tenant Move" operation easier to execute.
 
 Additional Information:
 

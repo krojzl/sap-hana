@@ -42,7 +42,7 @@ SAP HANA in-memory data can be divided into following usage types:
 - Delta Data fragments (update information; frequent changes)
 - Temporary Data fragments (computational data; very frequent changes)
 
-Server memory must be combination of Traditional RAM (`DRAM`) and Persistent Memory (`NVRAM`). Traditional RAM (`DRAM`) is required during Operating System start and is also offering better performance for write operations. On the other hand Persistent RAM (`NVRAM`) is cheaper and bigger and almost as fast as `DRAM` for read operations.
+Server memory must be combination of Traditional RAM (`DRAM`) and Persistent Memory (`NVRAM`). Traditional RAM (`DRAM`) is required during Operating System start and is also offering better performance for write operations. On the other hand, Persistent RAM (`NVRAM`) is cheaper and bigger and almost as fast as `DRAM` for read operations.
 
 Therefore, Persistent Memory is intended only for Main Data fragments of Column Store tables that are changed very infrequently (only during Delta Merge operation).
 
@@ -50,7 +50,7 @@ Persistent Memory is supported since SAP HANA 2.0 SP03 (revision 35 and higher) 
 
 Usage of Persistent Memory can be activated on the level of whole SAP HANA Database, selected Tables, selected Table Partitions or only selected Table Columns.
 
-Although mixed combinations with primary systems having Persistent Memory and secondary systems without Persistent Memory and visa versa are supported, it is not recommended for High Availability purpose. In any case proper memory sizing must be ensured to avoid out-of-memory situations after takeover.
+Although mixed combinations with primary systems having Persistent Memory and secondary systems without Persistent Memory and vice versa are supported, it is not recommended for High Availability purpose. In any case proper memory sizing must be ensured to avoid out-of-memory situations after takeover.
 
 Additional Information:
 
@@ -65,11 +65,11 @@ SAP HANA is offering native option how to manage less frequently accessed data u
 
 Data management of hot data is well described in [Administration Guide: Memory Management in the Column Store](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/bd6e6be8bb5710149e34e14608e07b76.html).
 
-Hot data is normally stored in "In-Memory Column Store". SAP HANA is automatically loading complete data structures (Table Columns or Table Column Partitions) into the memory based on first usage and will keep all data in memory as long as possible. These data structures are unloaded from memory only in case that allocated memory has reached the maximum limit and memory is required for processing other workload. In such case least recently used data structures are unloaded first.
+Hot data is normally stored in "In-Memory Column Store". SAP HANA is automatically loading complete data structures (Table Columns or Table Column Partitions) into the memory based on first usage and will keep all data in memory as long as possible. These data structures are unloaded from memory only in case that allocated memory has reached the maximum limit and memory is required for processing another workload. In such case least recently used data structures are unloaded first.
 
-SAP HANA Native Storage Extensions functionality is offering different approach based on "Disk Based Column Store". It can be activated for selected database objects (tables, partitions or columns). The data structures (Table Columns or Table Column Partitions) are kept on disk and only selected data pages are loaded into memory into "Buffer Cache". This concept if well known from all other classical databases.
+SAP HANA Native Storage Extensions functionality is offering different approach based on "Disk Based Column Store". It can be activated for selected database objects (tables, partitions or columns). The data structures (Table Columns or Table Column Partitions) are kept on disk and only selected data pages are loaded into memory into "Buffer Cache". This concept is well-known from all other classical databases.
 
-By using "Buffer Cache" that is significanly smaller than size of data in "Disk Based Column Store", Native Storage Extensions capability is increasing maximum amount of data that can be stored in SAP HANA database. Therefore, total storage requirements are also increased which needs to be reflected by infrastructure.
+By using "Buffer Cache" that is significantly smaller than size of data in "Disk Based Column Store", Native Storage Extensions capability is increasing maximum amount of data that can be stored in SAP HANA database. Therefore, total storage requirements are also increased which needs to be reflected by infrastructure.
 
 SAP HANA Native Storage Extension feature is supported since SAP HANA 2.0 SP04 and is limited only to Single-node SAP HANA Systems. Please note other functional restrictions as mentioned in [SAP Note 2771956: SAP HANA Native Storage Extension Functional Restrictions](https://launchpad.support.sap.com/#/notes/2771956).
 
@@ -93,7 +93,7 @@ Warm data must be placed in separate Tables or in separate Table Partitions. Sub
 
 SAP HANA Extension Nodes are supported since SAP HANA 1.0 SP12 (for BW scenario) and since SAP HANA 2.0 SP03 (native scenario) and are limited only to Scale-Out SAP HANA Systems.
 
-For SAP BW scenarios the hardware used for SAP HANA Extention Nodes can differ compared to other worker nodes starting from SAP HANA 2.0 SP03. For native scenarios this is supported from SAP HANA 2.0 SP4.
+For SAP BW scenarios the hardware used for SAP HANA Extension Nodes can differ compared to other worker nodes starting from SAP HANA 2.0 SP03. For native scenarios this is supported from SAP HANA 2.0 SP4.
 
 Additional Information:
 
@@ -109,7 +109,7 @@ Although SAP HANA Dynamic Tiering is based on different database, the integratio
 
 SAP HANA Dynamic Tiering database process (`esserver`) is typically deployed on dedicated host as part of SAP HANA Scale-Out scenario, however, there is option to co-deploy it on same host as SAP HANA in-memory database process (`indexserver`) for Single-Node scenario.
 
-However there are still several limitations that need to be taken into consideration when deploying SAP HANA Dynamic Tiering. These limitations include:
+However, there are still several limitations that need to be taken into consideration when deploying SAP HANA Dynamic Tiering. These limitations include:
 
 - Since SAP IQ is not having concept of Multitenant Database Containers (MDC), each SAP HANA Tenant Database using Dynamic Tiering needs its own dedicated SAP HANA Dynamic Tiering database process (`esserver`)
 - However, for Single-Node deployment scenario only, just one Dynamic Tiering database process (`esserver`) can be co-deployed on same host as SAP HANA in-memory database process (`indexserver`). Additional Dynamic Tiering database processes (associated with additional Tenant Databases) must be deployed on dedicated hosts - this is effectively turning the architecture into Scale-Out like (multi-host) deployment

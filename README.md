@@ -16,7 +16,7 @@ SAP HANA database is offering many different options how to design the infrastru
 
 There are different ways how to implement High Availability (HA) and Disaster Recovery (DR) and there are many optional SAP HANA extensions (like Extension Nodes, Dynamic Tiering, XSA, etc.) that can be deployed.
 
-There are various considerations that must be taken into account when designing infrastructure - for example ability to seamlesly move tenant (tenant portability) or whole instance (instance portability) without breaking external connectivity to the component.
+There are various considerations that must be taken into account when designing infrastructure - for example ability to seamlessly move tenant (tenant portability) or whole instance (instance portability) without breaking external connectivity to the component.
 
 Additional challenge is how to configure hostname resolution for individual virtual IPs to enable support for certificates and ensure their validity in relation to tenant or instance portability.
 
@@ -28,7 +28,7 @@ It is important to state that other architectures are still valid (as long as fo
 
 ## Approach
 
-The approach taken by the team is driven by the opinion that it is more simple to remove the features rather than to add them and make them working in harmony with the rest of the design.
+The approach taken by the team is driven by the opinion that it is simpler to remove the features rather than to add them and make them work in harmony with the rest of the design.
 
 Basic steps are following:
 

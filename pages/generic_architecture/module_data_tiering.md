@@ -132,7 +132,7 @@ In order to move the data to Dynamic Tiering node SAP introduced concept of Exte
 
 These new database table types are well explained and visualized in following blog: [A Closer Look at SAP HANA Dynamic Tiering for Warm Data Management](https://blogs.saphana.com/2018/09/18/a-closer-look-at-sap-hana-dynamic-tiering-for-warm-data-management).
 
-SAP HANA Dynamic Tiering is available only for use cases documented in [Master Guide: Dynamic Tiering Use Cases](https://help.sap.com/viewer/fb9c3779f9d1412b8de6dd0788fa167b/2.00.04/en-US/57db1c96c4df466d845a10574793bea1.html). SAP HANA Dynamic Tiering is not supported for following applications:
+SAP HANA Dynamic Tiering is available only for use cases documented in [Master Guide: Dynamic Tiering Use Cases](https://help.sap.com/viewer/fb9c3779f9d1412b8de6dd0788fa167b/2.00.04/en-US/57db1c96c4df466d845a10574793bea1.html). SAP HANA Dynamic Tiering is NOT supported for following applications:
 
 - SAP BW/4HANA ([SAP Note 2517460](https://launchpad.support.sap.com/#/notes/2517460))
 - SAP S/4HANA ([SAP Note 2462641](https://launchpad.support.sap.com/#/notes/2462641))

@@ -733,7 +733,7 @@ Different options how Cluster IP can be configured are presented - each having i
       - [SAP HANA Single-Node Scenario](#sap-hana-single-node-scenario)
     - [Cluster IP Design](#cluster-ip-design)
   - [Active/Active High Availability with Pacemaker Cluster](#activeactive-high-availability-with-pacemaker-cluster)
-  - [Active/Active High Availability with Pacemaker Cluster (enabled for "Tenant Move")](#activeactive-high-availability-with-pacemaker-cluster-enabled-for-%22tenant-move%22)
+  - [Active/Active High Availability with Pacemaker Cluster (enabled for &quot;Tenant Move&quot;)](#activeactive-high-availability-with-pacemaker-cluster-enabled-for-quottenant-movequot)
 
 <!-- /TOC -->
 
@@ -750,7 +750,7 @@ Following two Replication Modes are acceptable for Availability management:
 
 Synchronous on disk (`SYNC`) Replication Mode is having higher latency impact because it waits for disk write operation on secondary SAP HANA system to complete. The advantage is that Recovery Point Objective (RPO) is guaranteed to be zero (no data loss possible as long as secondary system is connected). This option is recommended in situations where we have potential Single Point of Failure (SPOF) shared between both primary and secondary SAP HANA system.
 
-Synchronous in-memory (`SYNCMEM`) Replication Mode is having Recovery Point Objective (RPO) only "close to zero" because information on secondary SAP HANA database is written to disk asynchronously. The advantage is improved performance because the latency impact is reduced by disk write operation. However this Replication Mode can lead to data loss in case that both primary and secondary SAP HANA system will fail at the same time - therefore it recommended only in scenarios where there is no Single Point of Failure (SPOF) shared between both primary and secondary system - for example in combination with Availability Zones.
+Synchronous in-memory (`SYNCMEM`) Replication Mode is having Recovery Point Objective (RPO) only "close to zero" because information on secondary SAP HANA database is written to disk asynchronously. The advantage is improved performance because the latency impact is reduced by disk write operation. However, this Replication Mode can lead to data loss in case that both primary and secondary SAP HANA system will fail at the same time - therefore it recommended only in scenarios where there is no Single Point of Failure (SPOF) shared between both primary and secondary system - for example in combination with Availability Zones.
 
 Note that `Full Sync Option` as described in [Administration Guide: Full Sync Option for SAP HANA System Replication](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/52913ed4a8db41aebef3ce4563c6f089.html) is not suitable for any High Availability usage. This is because any failure (either of primary or secondary SAP HANA System) will result in remaining SAP HANA System to be blocked.
 
@@ -1201,7 +1201,7 @@ Additional Information:
 
 # Alternative Implementations
 
-Description
+This section describes alternative implementations of SAP HANA System. These are not seen to be part of this Reference Architecture and are described only for informational purpose.
 
 <!-- TOC -->
 
@@ -1212,9 +1212,34 @@ Description
 
 ## SAP HANA Host Auto-Failover (in single Availability Zone)
 
-- single AZ implementation
-- high cluster takeover times
-- lower costs
+As discussed in [AD1: High Availability Concept](#ad1-high-availability-concept) there are two options how to implement SAP HANA High Availability. This Reference Architecture is based on option "2. SAP HANA System Replication (synchronous)". This section is discussing option "1. SAP HANA Host Auto-Failover (HAF)" not used in this Reference Architecture.
+
+SAP HANA Host Auto-Failover (HAF) is native function of SAP HANA System and is in detail described in [SAP HANA Host Auto-Failover Whitepaper](https://www.sap.com/documents/2016/06/f6b3861d-767c-0010-82c7-eda71af511fa.html).
+
+This High Availability option is based on adding dedicated `standby` host, that is passively waiting for failure of one of the active hosts. When such failure will happen, SAP HANA instance running on this `standby` host will takeover the data files and log files of failed host, thus replacing the failed host in its function.
+
+This option is having both advantages and disadvantages compared to option "2. SAP HANA System Replication (synchronous)".
+
+Advantages:
+
+- Lower Costs - SAP HANA Host Auto-Failover is adding 1-3 extra hosts dedicated for High Availability (`n+m` approach), while SAP HANA System Replication needs same amount of hosts on both sides (`n+n` approach)
+- Native Feature - SAP HANA Host Auto-Failover is native function of SAP HANA System - no additional cluster software is required (therefore no additional knowledge is required)
+
+Disadvantages:
+
+- Single Failure Protection - One single `standby` host is able to protect only against failure of one single active host, up to maximum of three `standby` hosts can be deployed (with cost implications)
+- No Availability Zone Support - SAP HANA Host Auto-Failover architecture is unable to support multiple Availability Zones as all active hosts must be available simultaneously
+- High Takeover Times - Since `standby` node cannot predict which of active hosts will fail, no pre-loading was implemented - therefore takeover times can easily take dozens of minutes for very large systems
+- No Support for Active/Active - since SAP HANA Host Auto-Failover does not have secondary system - there is no Active/Active capability (see [Administration Guide: Active/Active (Read Enabled)](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/fe5fc53706a34048bf4a3a93a5d7c866.html) for additional information)
+- No Support for Secondary Time Travel - since SAP HANA Host Auto-Failover does not have secondary system - there is no Secondary Time Travel capability (see [Administration Guide: Secondary Time Travel](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/7a41aabb663e4ec793e7d344606fe616.html) for additional information)
+- No Support for Near Zero Downtime Upgrades - since SAP HANA Host Auto-Failover does not have secondary system - there is no Near Zero Downtime Upgrades capability (see [Administration Guide: Use SAP HANA System Replication for Near Zero Downtime Upgrades](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/ee3fd9a0c2e74733a74e4ad140fde60b.html)
+- Not Supported by All IaaS Cloud Vendors - as explained in [Administration Guide: Multiple-Host System Concepts](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/d5b64eaebd0d4220900ce5404eabca67.html) SAP HANA Host Auto-Failover need to be deployed either using Shared File Systems (like NFS) or based on Storage Connector API - not all IaaS Cloud Vendors are supporting this deployment option
+
+Additional Information:
+
+- [Administration Guide: Host Auto-Failover](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/ae60cab98173431c97e8724856641207.html)
+- [Administration Guide: Multiple-Host System Concepts](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/d5b64eaebd0d4220900ce5404eabca67.html)
+- [SAP HANA Host Auto-Failover Whitepaper](https://www.sap.com/documents/2016/06/f6b3861d-767c-0010-82c7-eda71af511fa.html)
 
 # Platform Specific Architecture for AWS (Amazon Web Services)
 

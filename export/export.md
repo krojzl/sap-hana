@@ -767,6 +767,11 @@ IP redirection (repointing Cluster IP to new primary SAP HANA system after takeo
 
 The implementation details for Cluster IP are platform specific and are described in Platform Specific Architecture part of the documentation.
 
+Additional Information:
+
+- [How To SAP HANA System Replication Whitepaper](https://www.sap.com/documents/2017/07/606a676e-c97c-0010-82c7-eda71af511fa.html)
+- [SAP Note 2407186: How-To Guides & Whitepapers For SAP HANA High Availability](https://launchpad.support.sap.com/#/notes/2407186)
+
 ## High Availability with Pacemaker Cluster
 
 In order to decrease the Recovery Time Objective (RTO) the takeover process must be automated. This can be done using Pacemaker as cluster management solution.
@@ -945,7 +950,7 @@ Additional Information:
 
 # Module: Disaster Recovery
 
-Disaster Recovery module is enhancing the design by adding protection against regional disaster. Such disaster events can be caused by nature (floods, tornadoes, hurricanes or earthquakes), by humans (strikes, terrorism) or by technology (power blackout).
+Disaster Recovery module is enhancing the design by adding protection against Regional disaster. Such disaster events can be caused by nature (floods, tornadoes, hurricanes or earthquakes), by humans (strikes, terrorism) or by technology (power blackout).
 
 <!-- TOC -->
 
@@ -958,9 +963,9 @@ Disaster Recovery module is enhancing the design by adding protection against re
 
 ![Disaster Recovery](../images/arch-dr.png)
 
-All events mentioned above are typically having wide area of impact. Since High Availability design is based on synchronous replication, there are chances that both primary and secondary system will be impacted by regional disaster at the same time. Therefore, there is need to replicate the data outside the impacted area.
+All events mentioned above are typically having wide area of impact. Since High Availability design is based on synchronous replication between two Availability Zones of same Region, there are chances that both primary and secondary system will be impacted at the same time by Regional disaster. Therefore, there is need to replicate the data outside the impacted Region.
 
-SAP HANA Asynchronous (`ASYNC`) Replication is recommended approach how to ship the data to Disaster Recovery location (independent region). The advantage is that Asynchronous Replication Mode is not susceptible to increased latency because the replication is happening on background.
+SAP HANA Asynchronous (`ASYNC`) Replication is recommended approach how to ship the data to remote Disaster Recovery location (independent Region). The advantage is that Asynchronous Replication Mode is not susceptible to increased latency because the replication is happening on background.
 
 As explained in [System Replication Guide: Replication Performance Problems](https://help.sap.com/viewer/4e9b18c116aa42fc84c7dbfd02111aba/2.0.04/en-US/5d024503a63f495b8dd72ab9825208f6.html) the network bandwidth is still critical even for Asynchronous Replication Mode.
 
@@ -973,6 +978,8 @@ Additional Information:
 - [Administration Guide: SAP HANA Multitier System Replication](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/ca6f4c62c45b4c85a109c7faf62881fc.html)
 - [Administration Guide: SAP HANA Multitarget System Replication](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/ba457510958241889a459e606bbcf3d3.html)
 - [Administration Guide: Disaster Recovery Scenarios for Multitarget System Replication](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/8428f79ca32d4869848a1aefe437151c.html)
+- [How To SAP HANA System Replication Whitepaper](https://www.sap.com/documents/2017/07/606a676e-c97c-0010-82c7-eda71af511fa.html)
+- [SAP Note 2407186: How-To Guides & Whitepapers For SAP HANA High Availability](https://launchpad.support.sap.com/#/notes/2407186)
 
 # Module: Data Tiering Options
 
@@ -1026,7 +1033,9 @@ Persistent Memory is supported since SAP HANA 2.0 SP03 (revision 35 and higher) 
 
 Usage of Persistent Memory can be activated on the level of whole SAP HANA Database, selected Tables, selected Table Partitions or only selected Table Columns.
 
-Although mixed combinations with primary systems having Persistent Memory and secondary systems without Persistent Memory and vice versa are supported, it is not recommended for High Availability purpose. In any case proper memory sizing must be ensured to avoid out-of-memory situations after takeover.
+Since Persistent Memory DIMMs are having much bigger capacity compared to Traditional `DRAM` DIMMs, SAP HANA System with Persistent Memory will have increased overall RAM capacity able to host higher amount of data.
+
+Although replication between SAP HANA System having Persistent Memory and SAP HANA System without Persistent Memory is supported, it is not recommended for High Availability purpose. In any case proper memory sizing must be ensured to avoid out-of-memory situations after takeover.
 
 Additional Information:
 
@@ -1059,9 +1068,9 @@ Additional Information:
 
 ![SAP HANA Extension Nodes](../images/arch-extension-nodes.png)
 
-SAP HANA Scale-Out Systems can leverage SAP HANA Extension Nodes capability - new type of SAP HANA instance used exclusively for warm data.
+SAP HANA Scale-Out Systems can leverage SAP HANA Extension Nodes capability - new type of SAP HANA node type used exclusively for warm data.
 
-SAP HANA Extension Node (configured as a slave node, worker group value `worker_dt`) is storing the warm data in "In-Memory Column Store" like regular SAP HANA node used for hot data. Since the warm data is less frequently used, the performance for `SELECT` statements against this data is not seen as important. Therefore, we can overload this node with amount of data to be doubled or in some cases even quadrupled.
+SAP HANA Extension Node (configured as a slave node, worker group value `worker_dt`) is storing the warm data in "In-Memory Column Store" like regular SAP HANA node used for hot data. Since the warm data is less frequently used, the performance for `SELECT` statements against this data is not seen as important. Therefore, we can overload this node with amount of data to be doubled or in some cases even quadrupled compared to regular SAP HANA nodes.
 
 Because the data is stored in "In-Memory Column Store" the internal mechanics is same as described in [Administration Guide: Memory Management in the Column Store](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/bd6e6be8bb5710149e34e14608e07b76.html) and in previous section. Due to a high volume of data in given node, the data structures are loaded and unloaded much more often than hot data in other nodes. Since this is associated with performance degradation, the Extension Node must be dedicated only for warm data.
 

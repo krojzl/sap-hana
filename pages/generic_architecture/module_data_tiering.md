@@ -50,7 +50,9 @@ Persistent Memory is supported since SAP HANA 2.0 SP03 (revision 35 and higher) 
 
 Usage of Persistent Memory can be activated on the level of whole SAP HANA Database, selected Tables, selected Table Partitions or only selected Table Columns.
 
-Although mixed combinations with primary systems having Persistent Memory and secondary systems without Persistent Memory and vice versa are supported, it is not recommended for High Availability purpose. In any case proper memory sizing must be ensured to avoid out-of-memory situations after takeover.
+Since Persistent Memory DIMMs are having much bigger capacity compared to Traditional `DRAM` DIMMs, SAP HANA System with Persistent Memory will have increased overall RAM capacity able to host higher amount of data.
+
+Although replication between SAP HANA System having Persistent Memory and SAP HANA System without Persistent Memory is supported, it is not recommended for High Availability purpose. In any case proper memory sizing must be ensured to avoid out-of-memory situations after takeover.
 
 Additional Information:
 
@@ -83,9 +85,9 @@ Additional Information:
 
 ![SAP HANA Extension Nodes](../../images/arch-extension-nodes.png)
 
-SAP HANA Scale-Out Systems can leverage SAP HANA Extension Nodes capability - new type of SAP HANA instance used exclusively for warm data.
+SAP HANA Scale-Out Systems can leverage SAP HANA Extension Nodes capability - new type of SAP HANA node type used exclusively for warm data.
 
-SAP HANA Extension Node (configured as a slave node, worker group value `worker_dt`) is storing the warm data in "In-Memory Column Store" like regular SAP HANA node used for hot data. Since the warm data is less frequently used, the performance for `SELECT` statements against this data is not seen as important. Therefore, we can overload this node with amount of data to be doubled or in some cases even quadrupled.
+SAP HANA Extension Node (configured as a slave node, worker group value `worker_dt`) is storing the warm data in "In-Memory Column Store" like regular SAP HANA node used for hot data. Since the warm data is less frequently used, the performance for `SELECT` statements against this data is not seen as important. Therefore, we can overload this node with amount of data to be doubled or in some cases even quadrupled compared to regular SAP HANA nodes.
 
 Because the data is stored in "In-Memory Column Store" the internal mechanics is same as described in [Administration Guide: Memory Management in the Column Store](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/bd6e6be8bb5710149e34e14608e07b76.html) and in previous section. Due to a high volume of data in given node, the data structures are loaded and unloaded much more often than hot data in other nodes. Since this is associated with performance degradation, the Extension Node must be dedicated only for warm data.
 

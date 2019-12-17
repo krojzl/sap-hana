@@ -18,7 +18,7 @@ Different options how Cluster IP can be configured are presented - each having i
       - [SAP HANA Single-Node Scenario](#sap-hana-single-node-scenario)
     - [Cluster IP Design](#cluster-ip-design)
   - [Active/Active High Availability with Pacemaker Cluster](#activeactive-high-availability-with-pacemaker-cluster)
-  - [Active/Active High Availability with Pacemaker Cluster (enabled for &quot;Tenant Move&quot;)](#activeactive-high-availability-with-pacemaker-cluster-enabled-for-quottenant-movequot)
+  - [Active/Active High Availability with Pacemaker Cluster (enabled for Tenant Move)](#activeactive-high-availability-with-pacemaker-cluster-enabled-for-tenant-move)
 
 <!-- /TOC -->
 
@@ -51,6 +51,11 @@ There are two techniques how to ensure that application connectivity to SAP HANA
 IP redirection (repointing Cluster IP to new primary SAP HANA system after takeover) or DNS redirection is executed manually following the takeover action.
 
 The implementation details for Cluster IP are platform specific and are described in Platform Specific Architecture part of the documentation.
+
+Additional Information:
+
+- [How To SAP HANA System Replication Whitepaper](https://www.sap.com/documents/2017/07/606a676e-c97c-0010-82c7-eda71af511fa.html)
+- [SAP Note 2407186: How-To Guides & Whitepapers For SAP HANA High Availability](https://launchpad.support.sap.com/#/notes/2407186)
 
 ## High Availability with Pacemaker Cluster
 
@@ -205,7 +210,7 @@ Additional Information:
 - [Administration Guide: Connection Types](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/4032ccbf61e44062bbddde7cc60d63b9.html)
 - [Administration Guide: Virtual IP Address Handling](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/ac3a1f1955fd4919a8d51e30a54702cd.html)
 
-## Active/Active High Availability with Pacemaker Cluster (enabled for "Tenant Move")
+## Active/Active High Availability with Pacemaker Cluster (enabled for Tenant Move)
 
 ![Active/Active High Availability with Pacemaker Cluster (enabled for "Tenant Move")](../../images/arch-ha-tenants.png)
 
@@ -221,7 +226,7 @@ All tenant-specific Cluster IPs are implemented in same way as System Database C
 
 Second challenge that needs to be addressed is port used for connecting to System Database (`3xx13` for ODBC/JDBC/SQLDBC access). This port is dependent on `system_number` of given SAP HANA System and therefore can differ. Solution to this problem is to allocate additional port (same across all SAP HANA Systems) on which System Database Tenant will listen. The procedure is described in [Administration Guide: Configure Host-Independent Tenant Addresses](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/7fb37b4733fe44d08dfabca03845060b.html).
 
-The procedure how to move Tenant Database to new SAP HANA System ("Tenant relocation") is described here {TODO}.
+The procedure how to relocate SAP HANA system using Virtual Hostname/IP ("Instance Move") is described here {TODO}.
 
 Additional Information:
 

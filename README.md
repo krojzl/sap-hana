@@ -62,8 +62,8 @@ Basic steps are following:
 5. Operational Procedures
    - High Availability Takeover Process
    - Disaster Recovery Takeover Process
-   - Tenant Relocation
-   - Instance Relocation
+   - Tenant Move
+   - Instance Move
 6. Additional Information
    - SAP HANA: Stacking Options (MCOD, MCOS, MDC)
    - SAP HANA: Certificate setup

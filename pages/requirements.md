@@ -11,8 +11,8 @@ Following requirements were taken into account for this Reference Architecture. 
   - [REQ4: SAP HANA Multitenant Database Containers (MDC) Implementation](#req4-sap-hana-multitenant-database-containers-mdc-implementation)
   - [REQ5: Virtual IP and Hostname for SAP HANA System Relocation](#req5-virtual-ip-and-hostname-for-sap-hana-system-relocation)
   - [REQ6: Support for Data Tiering Options (related to REQ2 and REQ4)](#req6-support-for-data-tiering-options-related-to-req2-and-req4)
-  - [REQ7: Enabled for "Instance move" (related to REQ5)](#req7-enabled-for-%22instance-move%22-related-to-req5)
-  - [REQ8: Enabled for "Tenant move" (related to REQ2 and REQ5)](#req8-enabled-for-%22tenant-move%22-related-to-req2-and-req5)
+  - [REQ7: Enabled for Instance move (related to REQ5)](#req7-enabled-for-instance-move-related-to-req5)
+  - [REQ8: Enabled for Tenant move (related to REQ2 and REQ5)](#req8-enabled-for-tenant-move-related-to-req2-and-req5)
   - [REQ9: Fully TLS enabled (related to REQ4, REQ7 and REQ8)](#req9-fully-tls-enabled-related-to-req4-req7-and-req8)
 
 <!-- /TOC -->
@@ -47,13 +47,13 @@ SAP invented various options how to distribute the data based on frequency of us
 
 **Note:** This requirement might be potentially conflicting with other requirements (in particular with REQ2 and REQ4).
 
-## REQ7: Enabled for "Instance move" (related to REQ5)
+## REQ7: Enabled for Instance move (related to REQ5)
 
 In certain cases, it might be required to move instance of SAP HANA database to new VM (for example move from VM to Physical Server). The Reference Architecture should support such relocation without the need to change any configuration on connecting applications by ensuring that IP address and Hostname will be preserved.
 
 **Note:** This requirement is related to requirement REQ5.
 
-## REQ8: Enabled for "Tenant move" (related to REQ2 and REQ5)
+## REQ8: Enabled for Tenant move (related to REQ2 and REQ5)
 
 SAP HANA database is supporting ability to relocate the database tenant into another SAP HANA database. The Reference Architecture should support such tenant relocation without the need to change any configuration on connecting applications by ensuring that IP address and Hostname will be preserved.
 

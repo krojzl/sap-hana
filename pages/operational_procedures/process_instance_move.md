@@ -5,12 +5,12 @@ Description
 <!-- TOC -->
 
 - [SAP HANA Instance Move](#sap-hana-instance-move)
-  - [Overview](#overview)
-  - [Process: Step1](#process-step1)
+  - [SAP HANA Instance Move Overview](#sap-hana-instance-move-overview)
+  - [Process: IM_Step1](#process-imstep1)
 
 <!-- /TOC -->
 
-## Overview
+## SAP HANA Instance Move Overview
 
 - need to mention prerequisite to have tenant specific Virtual IP
 
@@ -23,4 +23,4 @@ Description
 
 - how to execute in cluster setup
 
-## Process: Step1
+## Process: IM_Step1

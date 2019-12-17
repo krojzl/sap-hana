@@ -5,12 +5,12 @@ Description
 <!-- TOC -->
 
 - [High Availability (HA) Operation](#high-availability-ha-operation)
-  - [Overview](#overview)
-  - [Process: Takeover](#process-takeover)
+  - [HA Operation Overview](#ha-operation-overview)
+  - [Process: DR_Step1](#process-drstep1)
 
 <!-- /TOC -->
 
-## Overview
+## HA Operation Overview
 
 - instroduction and overview of processes
   - failover from failed primary
@@ -19,4 +19,4 @@ Description
   - NZDT
   - other?
 
-## Process: Takeover
+## Process: DR_Step1

@@ -5,12 +5,12 @@ Description
 <!-- TOC -->
 
 - [SAP HANA Tenant Move](#sap-hana-tenant-move)
-  - [Overview](#overview)
-  - [Process: Step1](#process-step1)
+  - [SAP HANA Tenant Move Overview](#sap-hana-tenant-move-overview)
+  - [Process: TM_Step1](#process-tmstep1)
 
 <!-- /TOC -->
 
-## Overview
+## SAP HANA Tenant Move Overview
 
 - need to mention prerequisite to have tenant specific Cluster IPs
 - need to mention can be implemented even without HA
@@ -22,4 +22,4 @@ Description
 
 - how to execute in cluster setup (add resource, remove resource)
 
-## Process: Step1
+## Process: TM_Step1

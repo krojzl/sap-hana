@@ -5,16 +5,16 @@ Description
 <!-- TOC -->
 
 - [Disaster Recovery (DR) Operation](#disaster-recovery-dr-operation)
-  - [Overview](#overview)
-  - [Process: Takeover](#process-takeover)
+  - [DR Operation Overview](#dr-operation-overview)
+  - [Process: HA_Step1](#process-hastep1)
 
 <!-- /TOC -->
 
-## Overview
+## DR Operation Overview
 
 - instroduction and overview of processes
   - reconnecting DR after failover of HA
   - failover to DR locations
   - other?
 
-## Process: Takeover
+## Process: HA_Step1

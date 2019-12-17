@@ -1381,3 +1381,163 @@ Description
 
 - I think there is nothing infrastructure specific
 
+# Platform Specific Architecture for IBM Cloud
+
+Description
+
+<!-- TOC -->
+
+- [Platform Specific Architecture for IBM Cloud](#platform-specific-architecture-for-ibm-cloud)
+  - [IBM Cloud: Overall Architecture](#ibm-cloud-overall-architecture)
+  - [IBM Cloud: Basic Architecture](#ibm-cloud-basic-architecture)
+  - [IBM Cloud: Virtual Hostname/IP](#ibm-cloud-virtual-hostnameip)
+  - [IBM Cloud: High Availability](#ibm-cloud-high-availability)
+  - [IBM Cloud: Disaster Recovery](#ibm-cloud-disaster-recovery)
+  - [IBM Cloud: Data Tiering Options](#ibm-cloud-data-tiering-options)
+  - [IBM Cloud: XSA](#ibm-cloud-xsa)
+
+<!-- /TOC -->
+
+## IBM Cloud: Overall Architecture
+
+- need picture here
+
+- some general text
+  - some basic links to IBM reference architectures and documentation
+
+## IBM Cloud: Basic Architecture
+
+- supported instance types
+- description of single node implementation (storage) + picture
+- description of scale-out implementations (storage) + picture
+- are subnets are stretched across AZs?
+- links to IBM documentation
+
+## IBM Cloud: Virtual Hostname/IP
+
+- how to implement virtual IP - maybe additional network interface?
+- reference to Instance Move and how to execute IBM specific steps (move network interface?)
+
+## IBM Cloud: High Availability
+
+- link to list of Availability Zones in IBM
+- comment that it is important to measure AZ latency via niping (I will add this as new section in general part)
+- fencing mechanism (options, recommendation)
+- how to implement cluster IP ?
+  - provide some details
+- links to IBM/SUSE/RHEL documentation
+- how to modify cluster to have active/active
+- how to modify cluster to have tenant specific cluster IPs
+- anything else?
+
+## IBM Cloud: Disaster Recovery
+
+- anything to consider? bandwidth?
+
+## IBM Cloud: Data Tiering Options
+
+- what is supported what is not (matrix)
+- links to IBM documentation
+- modified pictures of storage setup (if required)
+
+## IBM Cloud: XSA
+
+- I think there is nothing infrastructure specific
+
+# High Availability (HA) Operation
+
+Description
+
+<!-- TOC -->
+
+- [High Availability (HA) Operation](#high-availability-ha-operation)
+  - [HA Operation Overview](#ha-operation-overview)
+  - [Process: DR_Step1](#process-drstep1)
+
+<!-- /TOC -->
+
+## HA Operation Overview
+
+- instroduction and overview of processes
+  - failover from failed primary
+  - reconnecting old primary as new secondary
+  - maintenance
+  - NZDT
+  - other?
+
+## Process: DR_Step1
+
+# Disaster Recovery (DR) Operation
+
+Description
+
+<!-- TOC -->
+
+- [Disaster Recovery (DR) Operation](#disaster-recovery-dr-operation)
+  - [DR Operation Overview](#dr-operation-overview)
+  - [Process: HA_Step1](#process-hastep1)
+
+<!-- /TOC -->
+
+## DR Operation Overview
+
+- instroduction and overview of processes
+  - reconnecting DR after failover of HA
+  - failover to DR locations
+  - other?
+
+## Process: HA_Step1
+
+# SAP HANA Instance Move
+
+Description
+
+<!-- TOC -->
+
+- [SAP HANA Instance Move](#sap-hana-instance-move)
+  - [SAP HANA Instance Move Overview](#sap-hana-instance-move-overview)
+  - [Process: IM_Step1](#process-imstep1)
+
+<!-- /TOC -->
+
+## SAP HANA Instance Move Overview
+
+- need to mention prerequisite to have tenant specific Virtual IP
+
+- reference to infra specific (aws/azure/ibmcloud) documents for instance move commands (depends in infra implementation)
+
+- instroduction and overview of steps
+  - procedure how to add Virtual IP
+  - procedure how to move to new host
+  - other?
+
+- how to execute in cluster setup
+
+## Process: IM_Step1
+
+# SAP HANA Tenant Move
+
+Description
+
+<!-- TOC -->
+
+- [SAP HANA Tenant Move](#sap-hana-tenant-move)
+  - [SAP HANA Tenant Move Overview](#sap-hana-tenant-move-overview)
+  - [Process: TM_Step1](#process-tmstep1)
+
+<!-- /TOC -->
+
+## SAP HANA Tenant Move Overview
+
+- need to mention prerequisite to have tenant specific Cluster IPs
+- need to mention can be implemented even without HA
+
+- reference to infra specific (aws/azure/ibmcloud) documents for tenant move commands (depends in infra implementation)
+
+- instroduction and overview of steps
+  - steps
+
+- how to execute in cluster setup (add resource, remove resource)
+
+## Process: TM_Step1
+

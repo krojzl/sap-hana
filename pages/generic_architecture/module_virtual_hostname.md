@@ -2,7 +2,7 @@
 
 In this module the basic architecture is extended by decoupling SAP HANA installation from OS installation by using Virtual Hostname and Virtual IP address dedicated to SAP HANA instance.
 
-This module is prerequisite to support "Instance Move" as documented here {TODO}.
+This module is prerequisite to support Instance Move as documented in [SAP HANA Instance Move](../pages/operational_procedures/process_instance_move.md#sap-hana-instance-move).
 
 <!-- TOC -->
 
@@ -27,7 +27,7 @@ Unfortunately, this is in direct contradiction with requirement to have differen
 
 Convenient solution is usage of Virtual Hostname and Virtual IP for SAP HANA installation that is always following given SAP HANA instance. The advantage is that SAP HANA installation is decoupled from Operating System and can be easily relocated to new Operating System.
 
-The procedure how to relocate SAP HANA system using Virtual Hostname/IP ("Instance Move") is described here {TODO}.
+The procedure how to relocate SAP HANA system using Virtual Hostname/IP is described in [SAP HANA Instance Move](../pages/operational_procedures/process_instance_move.md#sap-hana-instance-move).
 
 The real implementation of Virtual Hostname is platform specific and is described in detail in Platform Specific Architecture part of the documentation.
 

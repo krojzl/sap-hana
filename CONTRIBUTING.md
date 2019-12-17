@@ -20,7 +20,7 @@ If you want to contribute to a project and make it better, your help is very wel
     - [3.3. Push changes to GitHub](#33-push-changes-to-github)
   - [4. Upload to main project repository](#4-upload-to-main-project-repository)
     - [4.1. Synchronize your content with main project](#41-synchronize-your-content-with-main-project)
-    - [4.2. Update `CHANGELOG.md` file](#42-update-changelogmd-file)
+    - [4.2. Update CHANGELOG.md file](#42-update-changelogmd-file)
     - [4.3. Create Pull Request](#43-create-pull-request)
 
 <!-- /TOC -->
@@ -41,9 +41,9 @@ Detailed instructions are here: <https://help.github.com/en/articles/adding-a-ne
 
 ### 1.3. Fork the repository
 
-Forking the repository will create your own personal copy of the repository.
+Forking the `devel` repository will create your own personal copy of the repository.
 
-1. Navigate to the project repository: <https://github.com/sap-architecture/sap-hana>
+1. Navigate to the project repository: <https://github.com/sap-architecture-devel/sap-hana>
 
 2. Click on `Fork` button in upper-right corner of the page
 
@@ -103,7 +103,7 @@ Configure forked repository synchronization with main project repository.
     origin    git@github.com:<YOUR-USER>/sap-hana.git (push)
     ```
 
-3. Add link to main project repository: `git remote add upstream git@github.com:sap-architecture/sap-hana.git`
+3. Add link to main project repository: `git remote add upstream git@github.com:sap-architecture-devel/sap-hana.git`
 
 4. List again defined remote repositories:
 
@@ -111,8 +111,8 @@ Configure forked repository synchronization with main project repository.
     # git remote -v
     origin    git@github.com:<YOUR-USER>/sap-hana.git (fetch)
     origin    git@github.com:<YOUR-USER>/sap-hana.git (push)
-    upstream  git@github.com:sap-architecture/sap-hana.git (fetch)
-    upstream  git@github.com:sap-architecture/sap-hana.git (push)
+    upstream  git@github.com:sap-architecture-devel/sap-hana.git (fetch)
+    upstream  git@github.com:sap-architecture-devel/sap-hana.git (push)
     ```
 
 Detailed instructions are here: <https://help.github.com/en/articles/fork-a-repo>
@@ -136,7 +136,7 @@ Download and merge new updates from main project repository into your local repo
     remote: Compressing objects: 100% (10/10), done.
     remote: Total 11 (delta 0), reused 10 (delta 0), pack-reused 0
     Unpacking objects: 100% (11/11), done.
-    From github.com:sap-architecture/sap-hana
+    From github.com:sap-architecture-devel/sap-hana
     * [new branch]      master     -> upstream/master
     ```
 

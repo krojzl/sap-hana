@@ -57,13 +57,13 @@ Basic steps are following:
 4. Platform Specific Architecture
    - [IaaS Cloud: AWS](pages/platform_specific_architecture/iaas_cloud_aws.md#aws-overall-architecture)
    - [IaaS Cloud: Azure](pages/platform_specific_architecture/iaas_cloud_azure.md#azure-overall-architecture)
-   - IaaS Cloud: IBM Cloud
+   - [IaaS Cloud: IBM Cloud](pages/platform_specific_architecture/iaas_cloud_ibmcloud.md#platform-specific-architecture-for-ibm-cloud)
    - On-premise: VMware
 5. Operational Procedures
-   - High Availability Takeover Process
-   - Disaster Recovery Takeover Process
-   - Tenant Move
-   - Instance Move
+   - [High Availability (HA) Operation](pages/operational_procedures/process_ha_operation.md#high-availability-ha-operation)
+   - [Disaster Recovery (DR) Operation](pages/operational_procedures/process_dr_operation.md#disaster-recovery-dr-operation)
+   - [SAP HANA Instance Move](pages/operational_procedures/process_instance_move.md#sap-hana-instance-move)
+   - [SAP HANA Tenant Move](pages/operational_procedures/process_tenant_move.md#sap-hana-tenant-move)
 6. Additional Information
    - SAP HANA: Stacking Options (MCOD, MCOS, MDC)
    - SAP HANA: Certificate setup

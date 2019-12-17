@@ -212,21 +212,21 @@ Additional Information:
 
 ## Active/Active High Availability with Pacemaker Cluster (enabled for Tenant Move)
 
-![Active/Active High Availability with Pacemaker Cluster (enabled for "Tenant Move")](../../images/arch-ha-tenants.png)
+![Active/Active High Availability with Pacemaker Cluster (enabled for Tenant Move)](../../images/arch-ha-tenants.png)
 
 SAP HANA is offering option to move Tenant Database from existing SAP HANA System to new SAP HANA System having different `SID` and `system_number`.
 
-Architecture documented in previous section is having one big limitation related to "Tenant Move" operation. The design is supporting multiple Tenant Databases on one SAP HANA cluster however, all tenants are accessed over one shared Cluster IP.
+Architecture documented in previous section is having one big limitation related to Tenant Move operation. The design is supporting multiple Tenant Databases on one SAP HANA cluster however, all tenants are accessed over one shared Cluster IP.
 
 In such configuration when Tenant Database is moved, all applications connecting to this Tenant Database must be reconfigured to use Cluster IP of target SAP HANA cluster.
 
-To make "Tenant Move" operation as seamless as possible each tenant needs to have its own Cluster IP that will be moved to target SAP HANA cluster along with given tenant.
+To make Tenant Move operation as seamless as possible each tenant needs to have its own Cluster IP that will be moved to target SAP HANA cluster along with given tenant.
 
 All tenant-specific Cluster IPs are implemented in same way as System Database Cluster IP, they are following Active Nameserver of primary SAP HANA system - which is where System Database, used to connect to individual tenants, is available.
 
 Second challenge that needs to be addressed is port used for connecting to System Database (`3xx13` for ODBC/JDBC/SQLDBC access). This port is dependent on `system_number` of given SAP HANA System and therefore can differ. Solution to this problem is to allocate additional port (same across all SAP HANA Systems) on which System Database Tenant will listen. The procedure is described in [Administration Guide: Configure Host-Independent Tenant Addresses](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/7fb37b4733fe44d08dfabca03845060b.html).
 
-The procedure how to relocate SAP HANA system using Virtual Hostname/IP ("Instance Move") is described here {TODO}.
+The procedure how to relocate Tenant Database to new SAP HANA System is described in [SAP HANA Tenant Move](../pages/operational_procedures/process_tenant_move.md#sap-hana-tenant-move).
 
 Additional Information:
 

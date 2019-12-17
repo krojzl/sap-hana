@@ -57,13 +57,13 @@ Basic steps are following:
 4. Platform Specific Architecture
    - [IaaS Cloud: AWS](#aws-overall-architecture)
    - [IaaS Cloud: Azure](#azure-overall-architecture)
-   - IaaS Cloud: IBM Cloud
+   - [IaaS Cloud: IBM Cloud](#platform-specific-architecture-for-ibm-cloud)
    - On-premise: VMware
 5. Operational Procedures
-   - High Availability Takeover Process
-   - Disaster Recovery Takeover Process
-   - Tenant Relocation
-   - Instance Relocation
+   - [High Availability (HA) Operation](#high-availability-ha-operation)
+   - [Disaster Recovery (DR) Operation](#disaster-recovery-dr-operation)
+   - [SAP HANA Instance Move](#sap-hana-instance-move)
+   - [SAP HANA Tenant Move](#sap-hana-tenant-move)
 6. Additional Information
    - SAP HANA: Stacking Options (MCOD, MCOS, MDC)
    - SAP HANA: Certificate setup
@@ -105,7 +105,7 @@ If you want to contribute to a project and make it better, your help is very wel
     - [3.3. Push changes to GitHub](#33-push-changes-to-github)
   - [4. Upload to main project repository](#4-upload-to-main-project-repository)
     - [4.1. Synchronize your content with main project](#41-synchronize-your-content-with-main-project)
-    - [4.2. Update `CHANGELOG.md` file](#42-update-changelogmd-file)
+    - [4.2. Update CHANGELOG.md file](#42-update-changelogmd-file)
     - [4.3. Create Pull Request](#43-create-pull-request)
 
 <!-- /TOC -->
@@ -126,9 +126,9 @@ Detailed instructions are here: <https://help.github.com/en/articles/adding-a-ne
 
 ### 1.3. Fork the repository
 
-Forking the repository will create your own personal copy of the repository.
+Forking the `devel` repository will create your own personal copy of the repository.
 
-1. Navigate to the project repository: <https://github.com/sap-architecture/sap-hana>
+1. Navigate to the project repository: <https://github.com/sap-architecture-devel/sap-hana>
 
 2. Click on `Fork` button in upper-right corner of the page
 
@@ -188,7 +188,7 @@ Configure forked repository synchronization with main project repository.
     origin    git@github.com:<YOUR-USER>/sap-hana.git (push)
     ```
 
-3. Add link to main project repository: `git remote add upstream git@github.com:sap-architecture/sap-hana.git`
+3. Add link to main project repository: `git remote add upstream git@github.com:sap-architecture-devel/sap-hana.git`
 
 4. List again defined remote repositories:
 
@@ -196,8 +196,8 @@ Configure forked repository synchronization with main project repository.
     # git remote -v
     origin    git@github.com:<YOUR-USER>/sap-hana.git (fetch)
     origin    git@github.com:<YOUR-USER>/sap-hana.git (push)
-    upstream  git@github.com:sap-architecture/sap-hana.git (fetch)
-    upstream  git@github.com:sap-architecture/sap-hana.git (push)
+    upstream  git@github.com:sap-architecture-devel/sap-hana.git (fetch)
+    upstream  git@github.com:sap-architecture-devel/sap-hana.git (push)
     ```
 
 Detailed instructions are here: <https://help.github.com/en/articles/fork-a-repo>
@@ -221,7 +221,7 @@ Download and merge new updates from main project repository into your local repo
     remote: Compressing objects: 100% (10/10), done.
     remote: Total 11 (delta 0), reused 10 (delta 0), pack-reused 0
     Unpacking objects: 100% (11/11), done.
-    From github.com:sap-architecture/sap-hana
+    From github.com:sap-architecture-devel/sap-hana
     * [new branch]      master     -> upstream/master
     ```
 
@@ -460,8 +460,8 @@ Following requirements were taken into account for this Reference Architecture. 
   - [REQ4: SAP HANA Multitenant Database Containers (MDC) Implementation](#req4-sap-hana-multitenant-database-containers-mdc-implementation)
   - [REQ5: Virtual IP and Hostname for SAP HANA System Relocation](#req5-virtual-ip-and-hostname-for-sap-hana-system-relocation)
   - [REQ6: Support for Data Tiering Options (related to REQ2 and REQ4)](#req6-support-for-data-tiering-options-related-to-req2-and-req4)
-  - [REQ7: Enabled for "Instance move" (related to REQ5)](#req7-enabled-for-%22instance-move%22-related-to-req5)
-  - [REQ8: Enabled for "Tenant move" (related to REQ2 and REQ5)](#req8-enabled-for-%22tenant-move%22-related-to-req2-and-req5)
+  - [REQ7: Enabled for Instance move (related to REQ5)](#req7-enabled-for-instance-move-related-to-req5)
+  - [REQ8: Enabled for Tenant move (related to REQ2 and REQ5)](#req8-enabled-for-tenant-move-related-to-req2-and-req5)
   - [REQ9: Fully TLS enabled (related to REQ4, REQ7 and REQ8)](#req9-fully-tls-enabled-related-to-req4-req7-and-req8)
 
 <!-- /TOC -->
@@ -496,13 +496,13 @@ SAP invented various options how to distribute the data based on frequency of us
 
 **Note:** This requirement might be potentially conflicting with other requirements (in particular with REQ2 and REQ4).
 
-## REQ7: Enabled for "Instance move" (related to REQ5)
+## REQ7: Enabled for Instance move (related to REQ5)
 
 In certain cases, it might be required to move instance of SAP HANA database to new VM (for example move from VM to Physical Server). The Reference Architecture should support such relocation without the need to change any configuration on connecting applications by ensuring that IP address and Hostname will be preserved.
 
 **Note:** This requirement is related to requirement REQ5.
 
-## REQ8: Enabled for "Tenant move" (related to REQ2 and REQ5)
+## REQ8: Enabled for Tenant move (related to REQ2 and REQ5)
 
 SAP HANA database is supporting ability to relocate the database tenant into another SAP HANA database. The Reference Architecture should support such tenant relocation without the need to change any configuration on connecting applications by ensuring that IP address and Hostname will be preserved.
 
@@ -510,7 +510,7 @@ SAP HANA database is supporting ability to relocate the database tenant into ano
 
 ## REQ9: Fully TLS enabled (related to REQ4, REQ7 and REQ8)
 
-SAP HANA is supporting ability to encrypt the database communication by using Transport Layer Secure (TLS) / Secure Sockets Layer (SSL) protocol. Since Fully Qualified Domain Name (FQDN) is part of the TLS/SSL configuration the Reference Architecture should properly define usage of FQDNs for individual database containers (related to REQ4) and minimize the need to recreate the certificates as result of "Instance Move" (REQ7) and/or "Tenant Move" (REQ8).
+SAP HANA is supporting ability to encrypt the database communication by using Transport Layer Secure (TLS) / Secure Sockets Layer (SSL) protocol. Since Fully Qualified Domain Name (FQDN) is part of the TLS/SSL configuration the Reference Architecture should properly define usage of FQDNs for individual database containers (related to REQ4) and minimize the need to recreate the certificates as result of Instance Move (REQ7) and/or Tenant Move (REQ8).
 
 # Architectural Decisions
 
@@ -682,7 +682,7 @@ Additional information:
 
 In this module the basic architecture is extended by decoupling SAP HANA installation from OS installation by using Virtual Hostname and Virtual IP address dedicated to SAP HANA instance.
 
-This module is prerequisite to support "Instance relocation" as documented here {TODO}.
+This module is prerequisite to support Instance Move as documented in [SAP HANA Instance Move](#sap-hana-instance-move).
 
 <!-- TOC -->
 
@@ -707,7 +707,7 @@ Unfortunately, this is in direct contradiction with requirement to have differen
 
 Convenient solution is usage of Virtual Hostname and Virtual IP for SAP HANA installation that is always following given SAP HANA instance. The advantage is that SAP HANA installation is decoupled from Operating System and can be easily relocated to new Operating System.
 
-The procedure how to migrate SAP HANA system using Virtual Hostname/IP ("Instance relocation") is described here {TODO}.
+The procedure how to relocate SAP HANA system using Virtual Hostname/IP is described in [SAP HANA Instance Move](#sap-hana-instance-move).
 
 The real implementation of Virtual Hostname is platform specific and is described in detail in Platform Specific Architecture part of the documentation.
 
@@ -733,7 +733,7 @@ Different options how Cluster IP can be configured are presented - each having i
       - [SAP HANA Single-Node Scenario](#sap-hana-single-node-scenario)
     - [Cluster IP Design](#cluster-ip-design)
   - [Active/Active High Availability with Pacemaker Cluster](#activeactive-high-availability-with-pacemaker-cluster)
-  - [Active/Active High Availability with Pacemaker Cluster (enabled for &quot;Tenant Move&quot;)](#activeactive-high-availability-with-pacemaker-cluster-enabled-for-quottenant-movequot)
+  - [Active/Active High Availability with Pacemaker Cluster (enabled for Tenant Move)](#activeactive-high-availability-with-pacemaker-cluster-enabled-for-tenant-move)
 
 <!-- /TOC -->
 
@@ -925,23 +925,23 @@ Additional Information:
 - [Administration Guide: Connection Types](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/4032ccbf61e44062bbddde7cc60d63b9.html)
 - [Administration Guide: Virtual IP Address Handling](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/ac3a1f1955fd4919a8d51e30a54702cd.html)
 
-## Active/Active High Availability with Pacemaker Cluster (enabled for "Tenant Move")
+## Active/Active High Availability with Pacemaker Cluster (enabled for Tenant Move)
 
-![Active/Active High Availability with Pacemaker Cluster (enabled for "Tenant Move")](../images/arch-ha-tenants.png)
+![Active/Active High Availability with Pacemaker Cluster (enabled for Tenant Move)](../images/arch-ha-tenants.png)
 
 SAP HANA is offering option to move Tenant Database from existing SAP HANA System to new SAP HANA System having different `SID` and `system_number`.
 
-Architecture documented in previous section is having one big limitation related to "Tenant Move" operation. The design is supporting multiple Tenant Databases on one SAP HANA cluster however, all tenants are accessed over one shared Cluster IP.
+Architecture documented in previous section is having one big limitation related to Tenant Move operation. The design is supporting multiple Tenant Databases on one SAP HANA cluster however, all tenants are accessed over one shared Cluster IP.
 
 In such configuration when Tenant Database is moved, all applications connecting to this Tenant Database must be reconfigured to use Cluster IP of target SAP HANA cluster.
 
-To make "Tenant Move" operation as seamless as possible each tenant needs to have its own Cluster IP that will be moved to target SAP HANA cluster along with given tenant.
+To make Tenant Move operation as seamless as possible each tenant needs to have its own Cluster IP that will be moved to target SAP HANA cluster along with given tenant.
 
 All tenant-specific Cluster IPs are implemented in same way as System Database Cluster IP, they are following Active Nameserver of primary SAP HANA system - which is where System Database, used to connect to individual tenants, is available.
 
 Second challenge that needs to be addressed is port used for connecting to System Database (`3xx13` for ODBC/JDBC/SQLDBC access). This port is dependent on `system_number` of given SAP HANA System and therefore can differ. Solution to this problem is to allocate additional port (same across all SAP HANA Systems) on which System Database Tenant will listen. The procedure is described in [Administration Guide: Configure Host-Independent Tenant Addresses](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/7fb37b4733fe44d08dfabca03845060b.html).
 
-The procedure how to move Tenant Database to new SAP HANA System ("Tenant relocation") is described here {TODO}.
+The procedure how to relocate Tenant Database to new SAP HANA System is described in [SAP HANA Tenant Move](#sap-hana-tenant-move).
 
 Additional Information:
 
@@ -1176,7 +1176,7 @@ XSA Custom Application Data is always stored in Tenant Database. Additional Tena
 
 XSA Technical Data can be stored either in System Database Tenant (default option) or in Tenant Database along with XSA Customer Application Data (available since SAP HANA 2.0 SP03 (revision 34)).
 
-Since installing XSA Technical Data in System Database Tenant is making "Tenant Move" operation impossible, it is recommended to install XSA Technical Data into Tenant Database wherever possible. However, please note the technical restrictions as described in [Installation and Update Guide: Installing XS Advanced in a Tenant Database](https://help.sap.com/viewer/2c1988d620e04368aa4103bf26f17727/2.0.04/en-US/be61eaff568a4fcfbefe5644678cd0d4.html).
+Since installing XSA Technical Data in System Database Tenant is making Tenant Move operation impossible, it is recommended to install XSA Technical Data into Tenant Database wherever possible. However, please note the technical restrictions as described in [Installation and Update Guide: Installing XS Advanced in a Tenant Database](https://help.sap.com/viewer/2c1988d620e04368aa4103bf26f17727/2.0.04/en-US/be61eaff568a4fcfbefe5644678cd0d4.html).
 
 Additional Information:
 
@@ -1258,7 +1258,12 @@ Description
 
 - [Platform Specific Architecture for AWS (Amazon Web Services)](#platform-specific-architecture-for-aws-amazon-web-services)
   - [AWS: Overall Architecture](#aws-overall-architecture)
-  - [AWS: Implementation of Cluster IP](#aws-implementation-of-cluster-ip)
+  - [AWS: Basic Architecture](#aws-basic-architecture)
+  - [AWS: Virtual Hostname/IP](#aws-virtual-hostnameip)
+  - [AWS: High Availability](#aws-high-availability)
+  - [AWS: Disaster Recovery](#aws-disaster-recovery)
+  - [AWS: Data Tiering Options](#aws-data-tiering-options)
+  - [AWS: XSA](#aws-xsa)
 
 <!-- /TOC -->
 
@@ -1266,7 +1271,50 @@ Description
 
 ![AWS: Overall Architecture](../images/arch-aws-overall.png)
 
-## AWS: Implementation of Cluster IP
+- some general text
+  - some basic links to AWS reference architectures and documentation
+
+## AWS: Basic Architecture
+
+- supported instance types
+- description of single node implementation (storage) + picture
+- description of scale-out implementations (storage) + picture
+- mention that each AZ is its own subnet
+- links to AWS documentation
+
+## AWS: Virtual Hostname/IP
+
+- how to implement virtual IP - maybe additional elastic network interface?
+- reference to Instance Move and how to execute AWS specific steps (move elastic network interface?)
+
+## AWS: High Availability
+
+- link to list of Availability Zones in AWS
+- comment that it is important to measure AZ latency via niping (I will add this as new section in general part)
+- fencing mechanism (options, recommendation)
+- how to implement cluster IP (also referred as overlay IP)
+  - relation to different subnets per AZ
+  - entry in VPC routing table
+  - it is managed by cluster (need to assign IAM roles to VM)
+  - need to disable source/destination check on interface
+- links to AWS/SUSE/RHEL documentation
+- how to modify cluster to have active/active
+- how to modify cluster to have tenant specific cluster IPs
+- anything else?
+
+## AWS: Disaster Recovery
+
+- anything to consider? bandwidth?
+
+## AWS: Data Tiering Options
+
+- what is supported what is not (matrix)
+- links to AWS documentation
+- modified pictures of storage setup (if required)
+
+## AWS: XSA
+
+- I think there is nothing infrastructure specific
 
 # Platform Specific Architecture for Azure (Microsoft Azure)
 
@@ -1276,7 +1324,12 @@ Description
 
 - [Platform Specific Architecture for Azure (Microsoft Azure)](#platform-specific-architecture-for-azure-microsoft-azure)
   - [Azure: Overall Architecture](#azure-overall-architecture)
-  - [Azure: Implementation of Cluster IP](#azure-implementation-of-cluster-ip)
+  - [Azure: Basic Architecture](#azure-basic-architecture)
+  - [Azure: Virtual Hostname/IP](#azure-virtual-hostnameip)
+  - [Azure: High Availability](#azure-high-availability)
+  - [Azure: Disaster Recovery](#azure-disaster-recovery)
+  - [Azure: Data Tiering Options](#azure-data-tiering-options)
+  - [Azure: XSA](#azure-xsa)
 
 <!-- /TOC -->
 
@@ -1284,5 +1337,47 @@ Description
 
 ![Azure: Overall Architecture](../images/arch-azure-overall.png)
 
-## Azure: Implementation of Cluster IP
+- some general text
+  - some basic links to Azure reference architectures and documentation
+
+## Azure: Basic Architecture
+
+- supported instance types
+- description of single node implementation (storage) + picture
+- description of scale-out implementations (storage) + picture
+- mention that subnets are stretched across AZs
+- links to Azure documentation
+
+## Azure: Virtual Hostname/IP
+
+- how to implement virtual IP - maybe additional network interface?
+- reference to Instance Move and how to execute Azure specific steps (move network interface?)
+
+## Azure: High Availability
+
+- link to list of Availability Zones in Azure
+- comment that it is important to measure AZ latency via niping (I will add this as new section in general part)
+- fencing mechanism (options, recommendation)
+- how to implement cluster IP (as load balancer)
+  - explain why we need load balancer (no ARP invalidations)
+  - it is managed by cluster (explain how - but opening port on active node)
+  - link to [Video](https://youtu.be/axyPUGS7Wu4) and [PDF](https://www.suse.com/media/presentation/TUT1134_Microsoft_Azure_and_SUSE_HAE%20_When_Availability_Matters.pdf)
+- links to Azure/SUSE/RHEL documentation
+- how to modify cluster to have active/active
+- how to modify cluster to have tenant specific cluster IPs
+- anything else?
+
+## Azure: Disaster Recovery
+
+- anything to consider? bandwidth?
+
+## Azure: Data Tiering Options
+
+- what is supported what is not (matrix)
+- links to Azure documentation
+- modified pictures of storage setup (if required)
+
+## Azure: XSA
+
+- I think there is nothing infrastructure specific
 

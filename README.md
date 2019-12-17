@@ -52,7 +52,7 @@ Basic steps are following:
    - [Module: High Availability](pages/generic_architecture/module_high_availability.md#module-high-availability)
    - [Module: Disaster Recovery](pages/generic_architecture/module_disaster_recovery.md#module-disaster-recovery)
    - [Module: Data Tiering Options](pages/generic_architecture/module_data_tiering.md#module-data-tiering-options)
-   - [Module: XSA (SAP HANA extended application services, advanced model)](pages/generic_architecture/module_xsa.md#module-xsa-sap-hana-extended-application-services-advanced-model)
+   - [Module: SAP XSA](pages/generic_architecture/module_xsa.md#module-sap-xsa)
    - [Alternative Implementations](pages/generic_architecture/alternative_implementations.md#alternative-implementations)
 4. Platform Specific Architecture
    - [IaaS Cloud: AWS](pages/platform_specific_architecture/iaas_cloud_aws.md#aws-overall-architecture)

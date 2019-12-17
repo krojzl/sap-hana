@@ -52,7 +52,7 @@ Basic steps are following:
    - [Module: High Availability](#module-high-availability)
    - [Module: Disaster Recovery](#module-disaster-recovery)
    - [Module: Data Tiering Options](#module-data-tiering-options)
-   - [Module: XSA (SAP HANA extended application services, advanced model)](#module-xsa-sap-hana-extended-application-services-advanced-model)
+   - [Module: SAP XSA](#module-sap-xsa)
    - [Alternative Implementations](#alternative-implementations)
 4. Platform Specific Architecture
    - [IaaS Cloud: AWS](#aws-overall-architecture)
@@ -1128,13 +1128,13 @@ Additional Information:
 
 - [SAP HANA Dynamic Tiering Landing Page](https://help.sap.com/viewer/product/SAP_HANA_DYNAMIC_TIERING/2.00.04/en-US)
 
-# Module: XSA (SAP HANA extended application services, advanced model)
+# Module: SAP XSA
 
 SAP HANA extended application services, advanced model (XSA) is application server platform used for the development and execution of native data-intensive applications. This module is explaining how to implement SAP XSA as part of this Reference Architecture.
 
 <!-- TOC -->
 
-- [Module: XSA (SAP HANA extended application services, advanced model)](#module-xsa-sap-hana-extended-application-services-advanced-model)
+- [Module: SAP XSA](#module-sap-xsa)
   - [Reference Architecture of SAP XSA](#reference-architecture-of-sap-xsa)
     - [Additional Host Roles](#additional-host-roles)
     - [Tenant Database Installation](#tenant-database-installation)

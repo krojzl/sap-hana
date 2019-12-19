@@ -21,6 +21,8 @@ As explained in [System Replication Guide: Replication Performance Problems](htt
 
 Number of active nodes of the target SAP HANA System in the Disaster Recovery location must be same as on source system (see [Administration Guide: General Prerequisites for Configuring SAP HANA System Replication](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/86267e1ed56940bb8e4a45557cee0e43.html) for additional information).
 
+During Disaster Recovery Event both SAP Application Servers and SAP HANA Database is being failed over to Disaster Recovery location. All applications that were subject of failover are reconfigured and tested as part of failover procedure. For all external applications that need connectivity to SAP HANA System it is strongly recommended to connect via DNS, so that application connectivity can be restored by adjusting single DNS entry.
+
 Additional Information:
 
 - [System Replication Guide: SAP HANA System Replication](https://help.sap.com/viewer/4e9b18c116aa42fc84c7dbfd02111aba/2.0.04/en-US/afac7100bc6d47729ae8eae32da5fdec.html)

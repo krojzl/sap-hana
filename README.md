@@ -65,6 +65,7 @@ Basic steps are following:
    - [SAP HANA Instance Move](pages/operational_procedures/process_instance_move.md#sap-hana-instance-move)
    - [SAP HANA Tenant Move](pages/operational_procedures/process_tenant_move.md#sap-hana-tenant-move)
 6. Additional Information
+   - SAP HANA: Network Latency Requirements
    - SAP HANA: Stacking Options (MCOD, MCOS, MDC)
    - SAP HANA: Certificate setup
 

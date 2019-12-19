@@ -65,6 +65,7 @@ Basic steps are following:
    - [SAP HANA Instance Move](#sap-hana-instance-move)
    - [SAP HANA Tenant Move](#sap-hana-tenant-move)
 6. Additional Information
+   - SAP HANA: Network Latency Requirements
    - SAP HANA: Stacking Options (MCOD, MCOS, MDC)
    - SAP HANA: Certificate setup
 
@@ -970,6 +971,8 @@ SAP HANA Asynchronous (`ASYNC`) Replication is recommended approach how to ship 
 As explained in [System Replication Guide: Replication Performance Problems](https://help.sap.com/viewer/4e9b18c116aa42fc84c7dbfd02111aba/2.0.04/en-US/5d024503a63f495b8dd72ab9825208f6.html) the network bandwidth is still critical even for Asynchronous Replication Mode.
 
 Number of active nodes of the target SAP HANA System in the Disaster Recovery location must be same as on source system (see [Administration Guide: General Prerequisites for Configuring SAP HANA System Replication](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/86267e1ed56940bb8e4a45557cee0e43.html) for additional information).
+
+During Disaster Recovery Event both SAP Application Servers and SAP HANA Database is being failed over to Disaster Recovery location. All applications that were subject of failover are reconfigured and tested as part of failover procedure. For all external applications that need connectivity to SAP HANA System it is strongly recommended to connect via DNS, so that application connectivity can be restored by adjusting single DNS entry.
 
 Additional Information:
 

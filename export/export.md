@@ -1461,7 +1461,7 @@ Description
 
 ## HA Operation Overview
 
-- instroduction and overview of processes
+- introduction and overview of processes
   - failover from failed primary
   - reconnecting old primary as new secondary
   - maintenance
@@ -1484,7 +1484,7 @@ Description
 
 ## DR Operation Overview
 
-- instroduction and overview of processes
+- introduction and overview of processes
   - reconnecting DR after failover of HA
   - failover to DR locations
   - other?
@@ -1509,7 +1509,7 @@ Description
 
 - reference to infra specific (aws/azure/ibmcloud) documents for instance move commands (depends in infra implementation)
 
-- instroduction and overview of steps
+- introduction and overview of steps
   - procedure how to add Virtual IP
   - procedure how to move to new host
   - other?
@@ -1537,7 +1537,7 @@ Description
 
 - reference to infra specific (aws/azure/ibmcloud) documents for tenant move commands (depends in infra implementation)
 
-- instroduction and overview of steps
+- introduction and overview of steps
   - steps
 
 - how to execute in cluster setup (add resource, remove resource)

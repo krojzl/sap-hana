@@ -16,7 +16,7 @@ Description
 
 - reference to infra specific (aws/azure/ibmcloud) documents for instance move commands (depends in infra implementation)
 
-- instroduction and overview of steps
+- introduction and overview of steps
   - procedure how to add Virtual IP
   - procedure how to move to new host
   - other?

@@ -12,7 +12,7 @@ Description
 
 ## DR Operation Overview
 
-- instroduction and overview of processes
+- introduction and overview of processes
   - reconnecting DR after failover of HA
   - failover to DR locations
   - other?

@@ -12,7 +12,7 @@ Description
 
 ## HA Operation Overview
 
-- instroduction and overview of processes
+- introduction and overview of processes
   - failover from failed primary
   - reconnecting old primary as new secondary
   - maintenance

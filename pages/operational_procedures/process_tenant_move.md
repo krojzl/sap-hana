@@ -17,7 +17,7 @@ Description
 
 - reference to infra specific (aws/azure/ibmcloud) documents for tenant move commands (depends in infra implementation)
 
-- instroduction and overview of steps
+- introduction and overview of steps
   - steps
 
 - how to execute in cluster setup (add resource, remove resource)

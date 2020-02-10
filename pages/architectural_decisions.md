@@ -35,6 +35,8 @@ Following Architectural Decisions (ADs) were made as part of this Reference Arch
 | **Justification** | - option 1. might or might not be available and is unlikely to work cross-platform<br>- option 2. is part of the product and therefore always available, it is platform independent and will work even cross-platform<br>- as part of option 2. all data pages are checked for consistency during the transfer to secondary site
 | **Comment**       | Replication Mode must be `ASYNC` to avoid performance impact.<br>Operation Mode must be same for all tiers (either `delta_datashipping` or `logreplay`/`logreplay_readaccess`), combining Operations Modes is not supported.<br>Operation mode `logreplay_readaccess` is available only between primary and secondary system.
 
+Note: Combination of AD1 and AD2 will lead to usage of [SAP HANA Multitarget System Replication](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/ba457510958241889a459e606bbcf3d3.html) (or [SAP HANA Multitier System Replication](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/1.0.12/en-US/2bea048631874ddba1f5d5874c46dbaf.html) in case of SAP HANA 1.0).
+
 ## AD3: High Availability Takeover Automation
 
 | ID                | AD3

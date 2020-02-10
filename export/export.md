@@ -55,10 +55,11 @@ Basic steps are following:
    - [Module: SAP XSA](#module-sap-xsa)
    - [Alternative Implementations](#alternative-implementations)
 4. Platform Specific Architecture
-   - [IaaS Cloud: AWS](#aws-overall-architecture)
-   - [IaaS Cloud: Azure](#azure-overall-architecture)
-   - [IaaS Cloud: IBM Cloud](#platform-specific-architecture-for-ibm-cloud)
+   - [Cloud IaaS: AWS](#aws-overall-architecture)
+   - [Cloud IaaS: Azure](#azure-overall-architecture)
+   - [Cloud IaaS: IBM Cloud](#platform-specific-architecture-for-ibm-cloud)
    - On-premise: VMware
+   - On-premise: IBM Power
 5. Operational Procedures
    - [High Availability (HA) Operation](#high-availability-ha-operation)
    - [Disaster Recovery (DR) Operation](#disaster-recovery-dr-operation)
@@ -579,6 +580,8 @@ Following Architectural Decisions (ADs) were made as part of this Reference Arch
 | **Decision**      | 2. SAP HANA System Replication (asynchronous)
 | **Justification** | - option 1. might or might not be available and is unlikely to work cross-platform<br>- option 2. is part of the product and therefore always available, it is platform independent and will work even cross-platform<br>- as part of option 2. all data pages are checked for consistency during the transfer to secondary site
 | **Comment**       | Replication Mode must be `ASYNC` to avoid performance impact.<br>Operation Mode must be same for all tiers (either `delta_datashipping` or `logreplay`/`logreplay_readaccess`), combining Operations Modes is not supported.<br>Operation mode `logreplay_readaccess` is available only between primary and secondary system.
+
+Note: Combination of AD1 and AD2 will lead to usage of [SAP HANA Multitarget System Replication](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/ba457510958241889a459e606bbcf3d3.html) (or [SAP HANA Multitier System Replication](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/1.0.12/en-US/2bea048631874ddba1f5d5874c46dbaf.html) in case of SAP HANA 1.0).
 
 ## AD3: High Availability Takeover Automation
 
@@ -1292,6 +1295,7 @@ Description
 - [Platform Specific Architecture for AWS (Amazon Web Services)](#platform-specific-architecture-for-aws-amazon-web-services)
   - [AWS: Overall Architecture](#aws-overall-architecture)
   - [AWS: Basic Architecture](#aws-basic-architecture)
+    - [AWS: Storage Configurations](#aws-storage-configurations)
   - [AWS: Virtual Hostname/IP](#aws-virtual-hostnameip)
   - [AWS: High Availability](#aws-high-availability)
   - [AWS: Disaster Recovery](#aws-disaster-recovery)
@@ -1309,18 +1313,28 @@ Description
 
 ## AWS: Basic Architecture
 
+Link to generic content: [Module: Basic Architecture](#module-basic-architecture)
+
 - supported instance types
 - description of single node implementation (storage) + picture
 - description of scale-out implementations (storage) + picture
 - mention that each AZ is its own subnet
 - links to AWS documentation
 
+### AWS: Storage Configurations
+
+- visualization of storage for AWS
+
 ## AWS: Virtual Hostname/IP
+
+Link to generic content: [Module: Virtual Hostname/IP](#module-virtual-hostnameip)
 
 - how to implement virtual IP - maybe additional elastic network interface?
 - reference to Instance Move and how to execute AWS specific steps (move elastic network interface?)
 
 ## AWS: High Availability
+
+Link to generic content: [Module: High Availability](#module-high-availability)
 
 - link to list of Availability Zones in AWS
 - comment that it is important to measure AZ latency via niping (I will add this as new section in general part)
@@ -1337,15 +1351,21 @@ Description
 
 ## AWS: Disaster Recovery
 
+Link to generic content: [Module: Disaster Recovery](#module-disaster-recovery)
+
 - anything to consider? bandwidth?
 
 ## AWS: Data Tiering Options
+
+Link to generic content: [Module: Data Tiering Options](#module-data-tiering-options)
 
 - what is supported what is not (matrix)
 - links to AWS documentation
 - modified pictures of storage setup (if required)
 
 ## AWS: XSA
+
+Link to generic content: [Module: SAP XSA](#module-sap-xsa)
 
 - I think there is nothing infrastructure specific
 
@@ -1358,6 +1378,7 @@ Description
 - [Platform Specific Architecture for Azure (Microsoft Azure)](#platform-specific-architecture-for-azure-microsoft-azure)
   - [Azure: Overall Architecture](#azure-overall-architecture)
   - [Azure: Basic Architecture](#azure-basic-architecture)
+    - [Azure: Storage Configurations](#azure-storage-configurations)
   - [Azure: Virtual Hostname/IP](#azure-virtual-hostnameip)
   - [Azure: High Availability](#azure-high-availability)
   - [Azure: Disaster Recovery](#azure-disaster-recovery)
@@ -1375,18 +1396,28 @@ Description
 
 ## Azure: Basic Architecture
 
+Link to generic content: [Module: Basic Architecture](#module-basic-architecture)
+
 - supported instance types
 - description of single node implementation (storage) + picture
 - description of scale-out implementations (storage) + picture
 - mention that subnets are stretched across AZs
 - links to Azure documentation
 
+### Azure: Storage Configurations
+
+- visualization of storage for Azure
+
 ## Azure: Virtual Hostname/IP
+
+Link to generic content: [Module: Virtual Hostname/IP](#module-virtual-hostnameip)
 
 - how to implement virtual IP - maybe additional network interface?
 - reference to Instance Move and how to execute Azure specific steps (move network interface?)
 
 ## Azure: High Availability
+
+Link to generic content: [Module: High Availability](#module-high-availability)
 
 - link to list of Availability Zones in Azure
 - comment that it is important to measure AZ latency via niping (I will add this as new section in general part)
@@ -1402,15 +1433,21 @@ Description
 
 ## Azure: Disaster Recovery
 
+Link to generic content: [Module: Disaster Recovery](#module-disaster-recovery)
+
 - anything to consider? bandwidth?
 
 ## Azure: Data Tiering Options
+
+Link to generic content: [Module: Data Tiering Options](#module-data-tiering-options)
 
 - what is supported what is not (matrix)
 - links to Azure documentation
 - modified pictures of storage setup (if required)
 
 ## Azure: XSA
+
+Link to generic content: [Module: SAP XSA](#module-sap-xsa)
 
 - I think there is nothing infrastructure specific
 
@@ -1423,6 +1460,7 @@ Description
 - [Platform Specific Architecture for IBM Cloud](#platform-specific-architecture-for-ibm-cloud)
   - [IBM Cloud: Overall Architecture](#ibm-cloud-overall-architecture)
   - [IBM Cloud: Basic Architecture](#ibm-cloud-basic-architecture)
+    - [IBM Cloud: Storage Configurations](#ibm-cloud-storage-configurations)
   - [IBM Cloud: Virtual Hostname/IP](#ibm-cloud-virtual-hostnameip)
   - [IBM Cloud: High Availability](#ibm-cloud-high-availability)
   - [IBM Cloud: Disaster Recovery](#ibm-cloud-disaster-recovery)
@@ -1440,18 +1478,28 @@ Description
 
 ## IBM Cloud: Basic Architecture
 
+Link to generic content: [Module: Basic Architecture](#module-basic-architecture)
+
 - supported instance types
 - description of single node implementation (storage) + picture
 - description of scale-out implementations (storage) + picture
 - are subnets are stretched across AZs?
 - links to IBM documentation
 
+### IBM Cloud: Storage Configurations
+
+- visualization of storage for IBM Cloud
+
 ## IBM Cloud: Virtual Hostname/IP
+
+Link to generic content: [Module: Virtual Hostname/IP](#module-virtual-hostnameip)
 
 - how to implement virtual IP - maybe additional network interface?
 - reference to Instance Move and how to execute IBM specific steps (move network interface?)
 
 ## IBM Cloud: High Availability
+
+Link to generic content: [Module: High Availability](#module-high-availability)
 
 - link to list of Availability Zones in IBM
 - comment that it is important to measure AZ latency via niping (I will add this as new section in general part)
@@ -1465,15 +1513,21 @@ Description
 
 ## IBM Cloud: Disaster Recovery
 
+Link to generic content: [Module: Disaster Recovery](#module-disaster-recovery)
+
 - anything to consider? bandwidth?
 
 ## IBM Cloud: Data Tiering Options
+
+Link to generic content: [Module: Data Tiering Options](#module-data-tiering-options)
 
 - what is supported what is not (matrix)
 - links to IBM documentation
 - modified pictures of storage setup (if required)
 
 ## IBM Cloud: XSA
+
+Link to generic content: [Module: SAP XSA](#module-sap-xsa)
 
 - I think there is nothing infrastructure specific
 

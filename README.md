@@ -55,10 +55,11 @@ Basic steps are following:
    - [Module: SAP XSA](pages/generic_architecture/module_xsa.md#module-sap-xsa)
    - [Alternative Implementations](pages/generic_architecture/alternative_implementations.md#alternative-implementations)
 4. Platform Specific Architecture
-   - [IaaS Cloud: AWS](pages/platform_specific_architecture/iaas_cloud_aws.md#aws-overall-architecture)
-   - [IaaS Cloud: Azure](pages/platform_specific_architecture/iaas_cloud_azure.md#azure-overall-architecture)
-   - [IaaS Cloud: IBM Cloud](pages/platform_specific_architecture/iaas_cloud_ibmcloud.md#platform-specific-architecture-for-ibm-cloud)
+   - [Cloud IaaS: AWS](pages/platform_specific_architecture/cloud_iaas_aws.md#aws-overall-architecture)
+   - [Cloud IaaS: Azure](pages/platform_specific_architecture/cloud_iaas_azure.md#azure-overall-architecture)
+   - [Cloud IaaS: IBM Cloud](pages/platform_specific_architecture/cloud_iaas_ibmcloud.md#platform-specific-architecture-for-ibm-cloud)
    - On-premise: VMware
+   - On-premise: IBM Power
 5. Operational Procedures
    - [High Availability (HA) Operation](pages/operational_procedures/process_ha_operation.md#high-availability-ha-operation)
    - [Disaster Recovery (DR) Operation](pages/operational_procedures/process_dr_operation.md#disaster-recovery-dr-operation)

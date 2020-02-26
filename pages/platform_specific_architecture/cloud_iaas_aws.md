@@ -8,7 +8,8 @@ Description
   - [AWS: Overall Architecture](#aws-overall-architecture)
   - [AWS: Basic Architecture](#aws-basic-architecture)
     - [AWS: Supported Instance Types for SAP HANA](#aws-supported-instance-types-for-sap-hana)
-    - [AWS: Storage Configurations](#aws-storage-configurations)
+    - [AWS: Storage Setup for SAP HANA Implementation](#aws-storage-setup-for-sap-hana-implementation)
+    - [AWS: Networking specifics for AWS Availability Zones](#aws-networking-specifics-for-aws-availability-zones)
   - [AWS: Virtual Hostname/IP](#aws-virtual-hostnameip)
   - [AWS: High Availability](#aws-high-availability)
   - [AWS: Disaster Recovery](#aws-disaster-recovery)
@@ -21,7 +22,7 @@ Description
 
 Following diagram is illustrating complete version of Reference Architecture for SAP HANA tailored for AWS (Amazon Web Services).
 
-For detailed explanation of individual modules please see individual sections in [Generic SAP HANA Architecture](../README.md#table-of-content).
+For detailed explanation of individual modules please see individual sections in [Generic SAP HANA Architecture](../../README.md#table-of-content).
 
 ![AWS: Overall Architecture](../../images/arch-aws-overall.png)
 
@@ -37,17 +38,40 @@ Link to generic content: [Module: Basic Architecture](../generic_architecture/mo
 
 ### AWS: Supported Instance Types for SAP HANA
 
+Not every instance type is supported for productive SAP HANA usage.
 
+Official list of SAP certified instance types is available at [The SAP HANA Hardware Directory](https://www.sap.com/dmc/exp/2014-09-02-hana-hardware/enEN/iaas.html#categories=Amazon%20Web%20Services). This should always be used to decide whether the particular instance type is supported for SAP HANA or not.
 
-- supported instance types
-- description of single node implementation (storage) + picture
-- description of scale-out implementations (storage) + picture
-- mention that each AZ is its own subnet
-- links to AWS documentation
+AWS specific list of certified instances with additional details can be found in [SAP HANA on AWS Quick Start Guide: AWS Instance Types for SAP HANA](https://docs.aws.amazon.com/quickstart/latest/sap-hana/instances.html)
 
-### AWS: Storage Configurations
+### AWS: Storage Setup for SAP HANA Implementation
 
-- visualization of storage for AWS
+SAP HANA Storage Configuration is coming in two flavours:
+
+- General Purpose SSD (`gp2`) storage - cheaper storage that meets SAP KPI requirements for most of the SAP HANA workloads
+- Provisioned IOPS SSD (`io1`) storage - high-performance storage intended for most demanding SAP HANA workloads
+
+Following disk setup is recommended:
+
+![AWS: Storage Architecture](../../images/arch-aws-storage.png)
+
+| Filesystem    | Name             | Device type  | Comment
+|:--------------|:-----------------|:-------------|:----------------
+| /             | Root volume      | gp2          |
+| /hana/data    | SAP HANA data    | gp2 / io1    |
+| /hana/log     | SAP HANA logs    | gp2 / io1    |
+| /hana/shared  | SAP HANA shared  | gp2          | Provisioned only to the master node and NFS-mounted on other nodes
+| /usr/sap      | SAP binaries     | gp2          |
+| /backups      | SAP HANA backup  | st1          | Provisioned only to the master node and NFS-mounted on other nodes
+| /backups      | SAP HANA backup  | Amazon EFS   | Alternative option for implementing SAP HANA backup filesystem
+
+Instance specific sizing recommendations are available at [SAP HANA on AWS Quick Start Guide: Storage Configuration for SAP HANA](https://docs.aws.amazon.com/quickstart/latest/sap-hana/storage.html).
+
+### AWS: Networking specifics for AWS Availability Zones
+
+As visualized on the Overall Architecture diagram - in AWS each Availability Zone is having its own subnet. It is not possible to stretch one subnet across multiple Availability Zones. This needs to be taken into consideration during deployment planning.
+
+Impact on implementation of Cluster IP in AWS is described in [AWS: High Availability](#aws-high-availability).
 
 ## AWS: Virtual Hostname/IP
 

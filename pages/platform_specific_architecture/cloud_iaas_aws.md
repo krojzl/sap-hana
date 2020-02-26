@@ -60,10 +60,10 @@ Following disk setup is recommended:
 | /             | Root volume      | gp2          |
 | /hana/data    | SAP HANA data    | gp2 / io1    |
 | /hana/log     | SAP HANA logs    | gp2 / io1    |
-| /hana/shared  | SAP HANA shared  | gp2          | Provisioned only to the master node and NFS-mounted on other nodes
+| /hana/shared  | SAP HANA shared  | gp2          | Provisioned to the master, NFS-mounted on other nodes
 | /usr/sap      | SAP binaries     | gp2          |
-| /backups      | SAP HANA backup  | st1          | Provisioned only to the master node and NFS-mounted on other nodes
-| /backups      | SAP HANA backup  | Amazon EFS   | Alternative option for implementing SAP HANA backup filesystem
+| /backups      | SAP HANA backup  | st1          | Provisioned to the master, NFS-mounted on other nodes
+| /backups      | SAP HANA backup  | Amazon EFS   | Alternative option for SAP HANA backup filesystem
 
 Instance specific sizing recommendations are available at [SAP HANA on AWS Quick Start Guide: Storage Configuration for SAP HANA](https://docs.aws.amazon.com/quickstart/latest/sap-hana/storage.html).
 

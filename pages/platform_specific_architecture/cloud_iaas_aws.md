@@ -14,6 +14,10 @@ Description
   - [AWS: High Availability](#aws-high-availability)
   - [AWS: Disaster Recovery](#aws-disaster-recovery)
   - [AWS: Data Tiering Options](#aws-data-tiering-options)
+    - [AWS: Persistent Memory (Non-Volatile Random Access Memory - NVRAM)](#aws-persistent-memory-non-volatile-random-access-memory---nvram)
+    - [AWS: SAP HANA Native Storage Extensions (NSE)](#aws-sap-hana-native-storage-extensions-nse)
+    - [AWS: SAP HANA Extension Nodes](#aws-sap-hana-extension-nodes)
+    - [AWS: SAP HANA Dynamic Tiering (DT)](#aws-sap-hana-dynamic-tiering-dt)
   - [AWS: XSA](#aws-xsa)
 
 <!-- /TOC -->
@@ -28,9 +32,9 @@ For detailed explanation of individual modules please see individual sections in
 
 You can also review official AWS Reference Architecture and other documentation:
 
-- [SAP on AWS Technical Documentation: SAP HANA](https://aws.amazon.com/sap/docs/#SAP_HANA)
-- [SAP HANA on the AWS Cloud: Quick Start Reference Deployment](https://docs.aws.amazon.com/quickstart/latest/sap-hana/welcome.html)
-- [Multi-AZ (HA), Single-Node Architecture](https://docs.aws.amazon.com/quickstart/latest/sap-hana/multi-az-single.html)
+- [AWS: SAP on AWS Technical Documentation: SAP HANA](https://aws.amazon.com/sap/docs/#SAP_HANA)
+- [AWS: SAP HANA on the AWS Cloud: Quick Start Reference Deployment](https://docs.aws.amazon.com/quickstart/latest/sap-hana/welcome.html)
+- [AWS: Multi-AZ (HA), Single-Node Architecture](https://docs.aws.amazon.com/quickstart/latest/sap-hana/multi-az-single.html)
 
 ## AWS: Basic Architecture
 
@@ -40,9 +44,9 @@ Link to generic content: [Module: Basic Architecture](../generic_architecture/mo
 
 Not every instance type is supported for productive SAP HANA usage.
 
-Official list of SAP certified instance types is available at [The SAP HANA Hardware Directory](https://www.sap.com/dmc/exp/2014-09-02-hana-hardware/enEN/iaas.html#categories=Amazon%20Web%20Services). This should always be used to decide whether the particular instance type is supported for SAP HANA or not.
+Official list of SAP certified instance types is available at [SAP: The SAP HANA Hardware Directory](https://www.sap.com/dmc/exp/2014-09-02-hana-hardware/enEN/iaas.html#categories=Amazon%20Web%20Services). This should always be used to decide whether the particular instance type is supported for SAP HANA or not.
 
-AWS specific list of certified instances with additional details can be found in [SAP HANA on AWS Quick Start Guide: AWS Instance Types for SAP HANA](https://docs.aws.amazon.com/quickstart/latest/sap-hana/instances.html)
+AWS specific list of certified instances with additional details can be found in [AWS: SAP HANA on AWS Quick Start Guide: AWS Instance Types for SAP HANA](https://docs.aws.amazon.com/quickstart/latest/sap-hana/instances.html)
 
 ### AWS: Storage Setup for SAP HANA Implementation
 
@@ -65,7 +69,7 @@ Following disk setup is recommended:
 | /backups      | SAP HANA backup  | st1          | Provisioned to the master, NFS-mounted on other nodes
 | /backups      | SAP HANA backup  | Amazon EFS   | Alternative option for SAP HANA backup filesystem
 
-Instance specific sizing recommendations are available at [SAP HANA on AWS Quick Start Guide: Storage Configuration for SAP HANA](https://docs.aws.amazon.com/quickstart/latest/sap-hana/storage.html).
+Instance specific sizing recommendations are available at [AWS: SAP HANA on AWS Quick Start Guide: Storage Configuration for SAP HANA](https://docs.aws.amazon.com/quickstart/latest/sap-hana/storage.html).
 
 ### AWS: Networking specifics for AWS Availability Zones
 
@@ -107,6 +111,35 @@ Link to generic content: [Module: Disaster Recovery](../generic_architecture/mod
 
 Link to generic content: [Module: Data Tiering Options](../generic_architecture/module_data_tiering.md#module-data-tiering-options)
 
+Following data tiering options are supposed on AWS:
+
+| Data Tiering Option                      | Supported
+|:-----------------------------------------|:-----------------
+| Persistent Memory (NVRAM)                | No
+| SAP HANA Native Storage Extensions (NSE) | Yes
+| SAP HANA Extension Nodes                 | Yes
+| SAP HANA Dynamic Tiering (DT)            | Yes
+
+Additional Information:
+
+- [AWS: SAP Data Tiering](https://docs.aws.amazon.com/sap/latest/sap-hana/sap-data-tiering.html)
+
+### AWS: Persistent Memory (Non-Volatile Random Access Memory - NVRAM)
+
+Amazon Web Services platform does not offer any instance types having NVRAM that are supported for productive SAP HANA usage.
+
+### AWS: SAP HANA Native Storage Extensions (NSE)
+
+tbd
+
+### AWS: SAP HANA Extension Nodes
+
+tbd
+
+### AWS: SAP HANA Dynamic Tiering (DT)
+
+tbd
+
 - what is supported what is not (matrix)
 - links to AWS documentation
 - modified pictures of storage setup (if required)
@@ -115,4 +148,4 @@ Link to generic content: [Module: Data Tiering Options](../generic_architecture/
 
 Link to generic content: [Module: SAP XSA](../generic_architecture/module_xsa.md#module-sap-xsa)
 
-- I think there is nothing infrastructure specific
+SAP HANA extended application services, advanced model (XSA) component is not infrastructure dependent.

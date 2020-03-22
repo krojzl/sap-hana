@@ -6,7 +6,7 @@ SAP if offering range of capabilities how to optimize costs by segregating data 
 
 - [Module: Data Tiering Options](#module-data-tiering-options)
   - [Overview of Data Tiering Options for SAP HANA](#overview-of-data-tiering-options-for-sap-hana)
-  - [Persistent Memory (Non-Volatile Random Access Memory - NVRAM)](#persistent-memory-non-volatile-random-access-memory---nvram)
+  - [Persistent Memory (NVRAM)](#persistent-memory-nvram)
   - [SAP HANA Native Storage Extensions (NSE)](#sap-hana-native-storage-extensions-nse)
   - [SAP HANA Extension Nodes](#sap-hana-extension-nodes)
   - [SAP HANA Dynamic Tiering (DT)](#sap-hana-dynamic-tiering-dt)
@@ -17,16 +17,19 @@ SAP if offering range of capabilities how to optimize costs by segregating data 
 
 SAP is dividing the data based on the aging characteristics of the data and frequency of usage. Following data temperature tiers and tiering options are available:
 
-- Hot Data
-  - Dynamic Random Access Memory (DRAM)
-  - Persistent Memory (Non-Volatile Random Access Memory - NVRAM)
-- Warm Data
-  - SAP HANA Native Storage Extensions (NSE)
-  - SAP HANA Extension Nodes
-  - SAP HANA Dynamic Tiering (DT)
-- Cold Data
-  - SAP Data Hub / SAP Data Intelligence
-  - SAP HANA Spark Controller (Hadoop)
+| Data Tiering Option                                                                   | Native HANA | BW on HANA | Suite on HANA
+|:--------------------------------------------------------------------------------------|:------------|:-----------|:--------------
+| **Hot Data**                                                                          |
+| - Dynamic Random Access Memory (DRAM)                                                 | Yes         | Yes        | Yes
+| - [Persistent Memory (NVRAM)](#persistent-memory-nvram)                               | Yes         | Yes        | Yes
+| **Warm Data**                                                                         |
+| - [SAP HANA Native Storage Extensions (NSE)](#sap-hana-native-storage-extensions-nse) | Yes         | -          | Yes
+| - [SAP HANA Extension Nodes](#sap-hana-extension-nodes)                               | Yes         | Yes        | -
+| - [SAP HANA Dynamic Tiering (DT)](#sap-hana-dynamic-tiering-dt)                       | Yes         | -          | -
+| **Cold Data**                                                                         |
+| - SAP Near Line Storage                                                               |
+| - SAP Data Hub / SAP Data Intelligence                                                |
+| - SAP HANA Spark Controller (Hadoop)                                                  |
 
 Selected Data Tiering Options are discussed in sections below.
 
@@ -34,7 +37,7 @@ Additional Information:
 
 - [Administration Guide: Data Tiering](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/00421f8985a14e1b878195f4ce829be9.html)
 
-## Persistent Memory (Non-Volatile Random Access Memory - NVRAM)
+## Persistent Memory (NVRAM)
 
 SAP HANA in-memory data can be divided into following usage types:
 
@@ -42,7 +45,7 @@ SAP HANA in-memory data can be divided into following usage types:
 - Delta Data fragments (update information; frequent changes)
 - Temporary Data fragments (computational data; very frequent changes)
 
-Server memory must be combination of Traditional RAM (`DRAM`) and Persistent Memory (`NVRAM`). Traditional RAM (`DRAM`) is required during Operating System start and is also offering better performance for write operations. On the other hand, Persistent RAM (`NVRAM`) is cheaper and bigger and almost as fast as `DRAM` for read operations.
+Server memory must be combination of Traditional RAM (`DRAM`) and Persistent Memory (Non-Volatile Random Access Memory - `NVRAM`). Traditional RAM (`DRAM`) is required during Operating System start and is also offering better performance for write operations. On the other hand, Persistent RAM (`NVRAM`) is cheaper and bigger and almost as fast as `DRAM` for read operations.
 
 Therefore, Persistent Memory is intended only for Main Data fragments of Column Store tables that are changed very infrequently (only during Delta Merge operation).
 

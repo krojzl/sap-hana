@@ -17,15 +17,15 @@ SAP if offering range of capabilities how to optimize costs by segregating data 
 
 SAP is dividing the data based on the aging characteristics of the data and frequency of usage. Following data temperature tiers and tiering options are available:
 
-| Data Tiering Option                                                                   | Native HANA | BW on HANA | Suite on HANA
-|:--------------------------------------------------------------------------------------|:------------|:-----------|:--------------
+| Data Tiering Option                                                                   | Native HANA | BW on HANA<br>BW/4HANA | Suite on HANA<br>S/4HANA
+|:--------------------------------------------------------------------------------------|:------------|:-----------------------|:----------------------
 | **Hot Data**                                                                          |
-| - Dynamic Random Access Memory (DRAM)                                                 | Yes         | Yes        | Yes
-| - [Persistent Memory (NVRAM)](#persistent-memory-nvram)                               | Yes         | Yes        | Yes
+| - Dynamic Random Access Memory (DRAM)                                                 | Yes         | Yes                    | Yes
+| - [Persistent Memory (NVRAM)](#persistent-memory-nvram)                               | Yes         | Yes                    | Yes
 | **Warm Data**                                                                         |
-| - [SAP HANA Native Storage Extensions (NSE)](#sap-hana-native-storage-extensions-nse) | Yes         | -          | Yes
-| - [SAP HANA Extension Nodes](#sap-hana-extension-nodes)                               | Yes         | Yes        | -
-| - [SAP HANA Dynamic Tiering (DT)](#sap-hana-dynamic-tiering-dt)                       | Yes         | -          | -
+| - [SAP HANA Native Storage Extensions (NSE)](#sap-hana-native-storage-extensions-nse) | Yes         | -                      | Yes
+| - [SAP HANA Extension Nodes](#sap-hana-extension-nodes)                               | Yes         | Yes                    | -
+| - [SAP HANA Dynamic Tiering (DT)](#sap-hana-dynamic-tiering-dt)                       | Yes         | -                      | -
 | **Cold Data**                                                                         |
 | - SAP Near Line Storage                                                               |
 | - SAP Data Hub / SAP Data Intelligence                                                |

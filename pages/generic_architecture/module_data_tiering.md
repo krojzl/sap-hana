@@ -23,7 +23,7 @@ SAP is dividing the data based on the aging characteristics of the data and freq
 | - Dynamic Random Access Memory (DRAM)                                                 | Yes         | Yes                    | Yes
 | - [Persistent Memory (NVRAM)](#persistent-memory-nvram)                               | Yes         | Yes                    | Yes
 | **Warm Data**                                                                         |
-| - [SAP HANA Native Storage Extensions (NSE)](#sap-hana-native-storage-extensions-nse) | Yes         | -                      | Yes
+| - [SAP HANA Native Storage Extensions (NSE)](#sap-hana-native-storage-extensions-nse) | Yes         | Yes                    | Yes
 | - [SAP HANA Extension Nodes](#sap-hana-extension-nodes)                               | Yes         | Yes                    | -
 | - [SAP HANA Dynamic Tiering (DT)](#sap-hana-dynamic-tiering-dt)                       | Yes         | -                      | -
 | **Cold Data**                                                                         |
@@ -31,7 +31,7 @@ SAP is dividing the data based on the aging characteristics of the data and freq
 | - SAP Data Hub / SAP Data Intelligence                                                |
 | - SAP HANA Spark Controller (Hadoop)                                                  |
 
-Selected Data Tiering Options are discussed in sections below.
+Selected Data Tiering Options (those impacting SAP HANA Reference Architecture) are discussed in sections below.
 
 Additional Information:
 
@@ -105,6 +105,7 @@ Additional Information:
 - [Administration Guide: Extension Node](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/e285ac03529a4cc9ab2d73206d2e8eca.html)
 - [Administration Guide: Redistributing Tables in a Scaleout SAP HANA System](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/c6579b60d9761014ae59c8c868e6e054.html)
 - [More Details – HANA Extension Nodes for BW-on-HANA](http://scn.sap.com/community/bw-hana/blog/2016/04/26/more-details--hana-extension-nodes-for-bw-on-hana)
+- [SAP Note 2644438: SAP HANA Extension Node – Master Release Note](https://launchpad.support.sap.com/#/notes/2644438)
 
 ## SAP HANA Dynamic Tiering (DT)
 

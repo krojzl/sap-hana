@@ -14,7 +14,7 @@ Description
   - [AWS: High Availability](#aws-high-availability)
   - [AWS: Disaster Recovery](#aws-disaster-recovery)
   - [AWS: Data Tiering Options](#aws-data-tiering-options)
-    - [AWS: Persistent Memory (Non-Volatile Random Access Memory - NVRAM)](#aws-persistent-memory-non-volatile-random-access-memory---nvram)
+    - [AWS: Persistent Memory (NVRAM)](#aws-persistent-memory-nvram)
     - [AWS: SAP HANA Native Storage Extensions (NSE)](#aws-sap-hana-native-storage-extensions-nse)
     - [AWS: SAP HANA Extension Nodes](#aws-sap-hana-extension-nodes)
     - [AWS: SAP HANA Dynamic Tiering (DT)](#aws-sap-hana-dynamic-tiering-dt)
@@ -105,7 +105,7 @@ Link to generic content: [Module: High Availability](../generic_architecture/mod
 
 Link to generic content: [Module: Disaster Recovery](../generic_architecture/module_disaster_recovery.md#module-disaster-recovery)
 
-- anything to consider? bandwidth?
+Disaster Recovery for SAP HANA via SAP HANA System Replication is not infrastructure dependent.
 
 ## AWS: Data Tiering Options
 
@@ -113,36 +113,40 @@ Link to generic content: [Module: Data Tiering Options](../generic_architecture/
 
 Following data tiering options are supposed on AWS:
 
-| Data Tiering Option                      | Supported
-|:-----------------------------------------|:-----------------
-| Persistent Memory (NVRAM)                | No
-| SAP HANA Native Storage Extensions (NSE) | Yes
-| SAP HANA Extension Nodes                 | Yes
-| SAP HANA Dynamic Tiering (DT)            | Yes
+| Data Tiering Option                                                                     | Supported
+|:----------------------------------------------------------------------------------------|:-----------------
+| [Persistent Memory (NVRAM)](#aws-persistent-memory-nvram)                               | No
+| [SAP HANA Native Storage Extensions (NSE)](#aws-sap-hana-native-storage-extensions-nse) | Yes
+| [SAP HANA Extension Nodes](#aws-sap-hana-extension-nodes)                               | Yes
+| [SAP HANA Dynamic Tiering (DT)](#aws-sap-hana-dynamic-tiering-dt)                       | Yes
 
 Additional Information:
 
 - [AWS: SAP Data Tiering](https://docs.aws.amazon.com/sap/latest/sap-hana/sap-data-tiering.html)
 
-### AWS: Persistent Memory (Non-Volatile Random Access Memory - NVRAM)
+### AWS: Persistent Memory (NVRAM)
 
 Amazon Web Services platform does not offer any instance types having NVRAM that are supported for productive SAP HANA usage.
 
 ### AWS: SAP HANA Native Storage Extensions (NSE)
 
-tbd
+SAP HANA Native Storage Extensions only need additional disk space compared to regular SAP HANA deployments. Amazon Web Services platform does allow to provision additional disks to SAP HANA VM and add capacity into existing filesystems. There is no change to the design of the storage layout.
 
 ### AWS: SAP HANA Extension Nodes
 
-tbd
+SAP HANA Extension Node implementation is based on provisioning additional SAP HANA node to existing SAP HANA system. Result is SAP HANA Scale-Out system where one of the nodes is designated as SAP HANA Extension Node. Storage layout is visualized above in section [AWS: Storage Setup for SAP HANA Implementation](#aws-storage-setup-for-sap-hana-implementation).
+
+Additional Information:
+
+- [AWS: Warm Data Tiering Options: SAP HANA Extension Node](https://docs.aws.amazon.com/sap/latest/sap-hana/warm-data-tiering-options.html#sap-hana-extension-node)
 
 ### AWS: SAP HANA Dynamic Tiering (DT)
 
-tbd
+SAP HANA Dynamic Tiering (DT) implementation in Amazon Web Services platform is based on provisioning additional VM for Dynamic Tiering component and connecting it to VM hosting SAP HANA instance, thus forming two-node distributed setup. Storage layout is identical to SAP HANA Scale-out setup as illustrated above in section [AWS: Storage Setup for SAP HANA Implementation](#aws-storage-setup-for-sap-hana-implementation).
 
-- what is supported what is not (matrix)
-- links to AWS documentation
-- modified pictures of storage setup (if required)
+Additional Information:
+
+- [AWS: Warm Data Tiering Options: SAP HANA Dynamic Tiering](https://docs.aws.amazon.com/sap/latest/sap-hana/warm-data-tiering-options.html#sap-hana-dynamic-tiering)
 
 ## AWS: XSA
 

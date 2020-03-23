@@ -50,7 +50,7 @@ AWS specific list of certified instances with additional details can be found in
 
 ### AWS: Storage Setup for SAP HANA Implementation
 
-SAP HANA Storage Configuration is coming in two flavours:
+SAP HANA Storage Configuration is coming in two flavors:
 
 - General Purpose SSD (`gp2`) storage - cheaper storage that meets SAP KPI requirements for most of the SAP HANA workloads
 - Provisioned IOPS SSD (`io1`) storage - high-performance storage intended for most demanding SAP HANA workloads

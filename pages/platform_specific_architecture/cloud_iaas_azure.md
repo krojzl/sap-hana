@@ -12,7 +12,7 @@ Description
       - [Azure: Storage Setup for SAP HANA Implementation - Azure Premium SSD](#azure-storage-setup-for-sap-hana-implementation---azure-premium-ssd)
       - [Azure: Storage Setup for SAP HANA Implementation - Azure Ultra disk](#azure-storage-setup-for-sap-hana-implementation---azure-ultra-disk)
       - [Azure: Storage Setup for SAP HANA Implementation - Azure NetApp Files](#azure-storage-setup-for-sap-hana-implementation---azure-netapp-files)
-    - [Azure: Storage Configurations](#azure-storage-configurations)
+    - [Azure: Networking specifics for Azure Availability Zones](#azure-networking-specifics-for-azure-availability-zones)
   - [Azure: Virtual Hostname/IP](#azure-virtual-hostnameip)
   - [Azure: High Availability](#azure-high-availability)
   - [Azure: Disaster Recovery](#azure-disaster-recovery)
@@ -29,7 +29,7 @@ For detailed explanation of individual modules please see individual sections in
 
 ![Azure: Overall Architecture](../../images/arch-azure-overall.png)
 
-You can also review official AWS Reference Architecture and other documentation:
+You can also review official Azure Reference Architecture and other documentation:
 
 - [Azure: SAP HANA infrastructure configurations and operations](https://docs.microsoft.com/en-us/azure/virtual-machines/workloads/sap/hana-vm-operations)
 - [Azure: SAP HANA (Large Instances) architecture](https://docs.microsoft.com/en-us/azure/virtual-machines/workloads/sap/hana-architecture)
@@ -51,13 +51,15 @@ Azure specific list of certified instances with additional details can be found 
 
 ### Azure: Storage Setup for SAP HANA Implementation
 
-SAP HANA Storage Configuration is coming in following flavors:
+SAP HANA Storage Configuration for Virtual Machines is coming in following flavors:
 
 - [Azure Premium SSD](cloud_iaas_azure.md#azure-storage-setup-for-sap-hana-implementation---azure-premium-ssd) - cheaper storage that meets SAP KPI requirements for most of the SAP HANA workloads
 - [Azure Ultra disk](cloud_iaas_azure.md#azure-storage-setup-for-sap-hana-implementation---azure-ultra-disk) - high-performance storage intended for most demanding SAP HANA workloads
 - [Azure NetApp Files](cloud_iaas_azure.md#azure-storage-setup-for-sap-hana-implementation---azure-netapp-files) - special option for [SAP HANA Host Auto-Failover (in single Availability Zone)](../generic_architecture/alternative_implementations.md#sap-hana-host-auto-failover-in-single-availability-zone)
 
 Recommended disk setup for each option is described is following sections.
+
+SAP HANA Storage Configuration for HANA Large Instances is always based on NFS storage as supported deployment options are covered in [Azure: Supported scenarios for HANA Large Instances](https://docs.microsoft.com/en-us/azure/virtual-machines/workloads/sap/hana-supported-scenario).
 
 #### Azure: Storage Setup for SAP HANA Implementation - Azure Premium SSD
 
@@ -116,17 +118,11 @@ Note: Please be aware about Azure NetApp Files limitations as described in [Azur
 
 Key limitation is fact that Azure NetApp Files are not Availability Zone aware and can cause performance degradation when not deployed in close proximity (for example following High Availability takeover).
 
+### Azure: Networking specifics for Azure Availability Zones
 
+As visualized on the Overall Architecture diagram - in Azure both Availability Zones are using one subnet stretched across multiple Availability Zones. This is achieved by Network Virtualization, however, side effect of this approach is that classical [ARP cache](https://en.wikipedia.org/wiki/ARP_cache) invalidations are not working - this is having big impact on implementation of Cluster IP in Azure.
 
-- supported instance types
-- description of single node implementation (storage) + picture
-- description of scale-out implementations (storage) + picture
-- mention that subnets are stretched across AZs
-- links to Azure documentation
-
-### Azure: Storage Configurations
-
-- visualization of storage for Azure
+Impact on implementation of Cluster IP in Azure is described in [Azure: High Availability](#azure-high-availability).
 
 ## Azure: Virtual Hostname/IP
 
@@ -155,7 +151,7 @@ Link to generic content: [Module: High Availability](../generic_architecture/mod
 
 Link to generic content: [Module: Disaster Recovery](../generic_architecture/module_disaster_recovery.md#module-disaster-recovery)
 
-- anything to consider? bandwidth?
+Disaster Recovery for SAP HANA via SAP HANA System Replication is not infrastructure dependent.
 
 ## Azure: Data Tiering Options
 
@@ -169,4 +165,4 @@ Link to generic content: [Module: Data Tiering Options](../generic_architecture/
 
 Link to generic content: [Module: SAP XSA](../generic_architecture/module_xsa.md#module-sap-xsa)
 
-- I think there is nothing infrastructure specific
+SAP HANA extended application services, advanced model (XSA) component is not infrastructure dependent.

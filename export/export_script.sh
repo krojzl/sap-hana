@@ -42,9 +42,11 @@ print_stat
 echo ""
 echo "Repairing image location..."
 sed -i '' -E 's/\((..\/)*images/(..\/images/' export.md
+sed -i '' -E 's/\((..\/)*images/(..\/images/' export.md
 
 echo ""
 echo "Repairing links location..."
+sed -i '' -E '/([^!]\[.*\]\(http.*\))/! s/([^!]\[.*\]\().+(#.+\))/\1\2/' export.md
 sed -i '' -E '/([^!]\[.*\]\(http.*\))/! s/([^!]\[.*\]\().+(#.+\))/\1\2/' export.md
 
 print_stat

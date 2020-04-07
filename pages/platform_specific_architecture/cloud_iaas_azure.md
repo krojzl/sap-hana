@@ -69,20 +69,52 @@ Recommended disk setup for each option is described is following sections.
 | /hana/data    | SAP HANA data    | P20, P30 or P40    |
 | /hana/log     | SAP HANA logs    | P20                |
 | /hana/shared  | SAP HANA shared  | P20 or P30         | For Single-Node deployments
-| /hana/shared  | SAP HANA shared  | Azure NetApp Files | For Scale-Out ddeployments
+| /hana/shared  | SAP HANA shared  | Azure NetApp Files | For Scale-Out deployments
 | /usr/sap      | SAP binaries     | P6                 |
 | /backups      | SAP HANA backup  | P20, P30, P40, P50 | For Single-Node deployments
-| /backups      | SAP HANA backup  | Azure NetApp Files  | For Scale-Out ddeployments
+| /backups      | SAP HANA backup  | Azure NetApp Files | For Scale-Out deployments
 
 Instance specific sizing recommendations are available at [Azure: Azure Premium SSD](https://docs.microsoft.com/en-us/azure/virtual-machines/workloads/sap/hana-vm-operations-storage#solutions-with-premium-storage-and-azure-write-accelerator-for-azure-m-series-virtual-machines).
 
+Note: Cost conscious storage configuration is available for use, however, it is not officially supported by SAP.
+
 #### Azure: Storage Setup for SAP HANA Implementation - Azure Ultra disk
 
-- [Azure: Azure Ultra disk](https://docs.microsoft.com/en-us/azure/virtual-machines/workloads/sap/hana-vm-operations-storage#azure-ultra-disk-storage-configuration-for-sap-hana)
+![Azure: Storage Architecture - Azure Ultra disk](../../images/arch-azure-storage2.png)
+
+| Filesystem    | Name             | Device type        | Comment
+|:--------------|:-----------------|:-------------------|:----------------
+| /             | Root volume      | P6 or P10          |
+| /hana/data    | SAP HANA data    | Ultra disk         | Alternatively can be on one volume with logs
+| /hana/log     | SAP HANA logs    | Ultra disk         | Alternatively can be on one volume with data
+| /hana/shared  | SAP HANA shared  | P20 or P30         | For Single-Node deployments
+| /hana/shared  | SAP HANA shared  | Azure NetApp Files | For Scale-Out deployments
+| /usr/sap      | SAP binaries     | P6                 |
+| /backups      | SAP HANA backup  | P20, P30, P40, P50 | For Single-Node deployments
+| /backups      | SAP HANA backup  | Azure NetApp Files | For Scale-Out deployments
+
+Instance specific sizing recommendations are available at [Azure: Azure Ultra disk](https://docs.microsoft.com/en-us/azure/virtual-machines/workloads/sap/hana-vm-operations-storage#azure-ultra-disk-storage-configuration-for-sap-hana).
+
+Note: Please be aware about Ultra disk limitations as described in [Azure: Ultra disk - GA scope and limitations](https://docs.microsoft.com/en-gb/azure/virtual-machines/windows/disks-types#ga-scope-and-limitations).
 
 #### Azure: Storage Setup for SAP HANA Implementation - Azure NetApp Files
 
-- [Azure: Azure NetApp Files](https://docs.microsoft.com/en-us/azure/virtual-machines/workloads/sap/hana-vm-operations-storage#nfs-v41-volumes-on-azure-netapp-files)
+![Azure: Storage Architecture - Azure NetApp Files](../../images/arch-azure-storage3.png)
+
+| Filesystem    | Name             | Device type        | Comment
+|:--------------|:-----------------|:-------------------|:----------------
+| /             | Root volume      | P6 or P10          |
+| /hana/data    | SAP HANA data    | Azure NetApp Files | For bigger systems one volume per mount point
+| /hana/log     | SAP HANA logs    | Azure NetApp Files | For bigger systems one volume per mount point
+| /hana/shared  | SAP HANA shared  | Azure NetApp Files |
+| /usr/sap      | SAP binaries     | P6                 |
+| /backups      | SAP HANA backup  | Azure NetApp Files |
+
+Instance specific sizing recommendations are available at [Azure: Azure NetApp Files](https://docs.microsoft.com/en-us/azure/virtual-machines/workloads/sap/hana-vm-operations-storage#nfs-v41-volumes-on-azure-netapp-files).
+
+Note: Please be aware about Azure NetApp Files limitations as described in [Azure: Azure NetApp Files - Important considerations](https://docs.microsoft.com/en-gb/azure/virtual-machines/workloads/sap/sap-hana-scale-out-standby-netapp-files-suse#important-considerations).
+
+Key limitation is fact that Azure NetApp Files are not Availability Zone aware and can cause performance degradation when not deployed in close proximity (for example following High Availability takeover).
 
 
 

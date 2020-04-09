@@ -580,7 +580,7 @@ Following Architectural Decisions (ADs) were made as part of this Reference Arch
 | **Assumptions**   | Overall design should support both single-node and scale-out in parallel next to each other.<br>Objective is to minimize the Recovery Time Objective (RTO).
 | **Options**       | 1. [SAP HANA Host Auto-Failover (HAF)](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/ae60cab98173431c97e8724856641207.html)<br> 2. [SAP HANA System Replication (synchronous)](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/b74e16a9e09541749a745f41246a065e.html)
 | **Decision**      | 2. SAP HANA System Replication (synchronous)
-| **Justification** | - this is the only option that is supporting [REQ2](../pages/requirements.md#req2-high-availability-ha-across-availability-zones-azs) for scale-out systems<br>- the Recovery Time Objective (RTO) values are significantly smaller compared to 1.<br>- this option is supporting additional features like [Active/Active (Read Enabled)](https://help.sap.com/viewer/4e9b18c116aa42fc84c7dbfd02111aba/2.0.04/en-US/8231617177f743d1ba46fdfc5a82dcd1.html) or [Secondary Time Travel](https://help.sap.com/viewer/4e9b18c116aa42fc84c7dbfd02111aba/2.0.04/en-US/ab3a78d7e0c143c6b9765fb287a3b0c7.html)
+| **Justification** | - this is the only option that is supporting [REQ2](#req2-high-availability-ha-across-availability-zones-azs) for scale-out systems<br>- the Recovery Time Objective (RTO) values are significantly smaller compared to 1.<br>- this option is supporting additional features like [Active/Active (Read Enabled)](https://help.sap.com/viewer/4e9b18c116aa42fc84c7dbfd02111aba/2.0.04/en-US/8231617177f743d1ba46fdfc5a82dcd1.html) or [Secondary Time Travel](https://help.sap.com/viewer/4e9b18c116aa42fc84c7dbfd02111aba/2.0.04/en-US/ab3a78d7e0c143c6b9765fb287a3b0c7.html)
 | **Comment**       | Recommended Replication Mode is `SYNC` in case there is possible shared Single Point of Failure (SPOF) or `SYNCMEM` in case of two physically separated infrastructures.<br>Recommended Operation Mode is `logreplay` (or `logreplay_readaccess`).
 
 ## AD2: Disaster Recovery Concept
@@ -1521,7 +1521,7 @@ SAP HANA Storage Configuration for Virtual Machines is coming in following flavo
 
 - [Azure Premium SSD](#azure-storage-setup-for-sap-hana-implementation---azure-premium-ssd) - cheaper storage that meets SAP KPI requirements for most of the SAP HANA workloads
 - [Azure Ultra disk](#azure-storage-setup-for-sap-hana-implementation---azure-ultra-disk) - high-performance storage intended for most demanding SAP HANA workloads
-- [Azure NetApp Files](#sap-hana-host-auto-failover-in-single-availability-zone)
+- [Azure NetApp Files](#azure-storage-setup-for-sap-hana-implementation---azure-netapp-files) - special option for [SAP HANA Host Auto-Failover (in single Availability Zone)](#sap-hana-host-auto-failover-in-single-availability-zone)
 
 Recommended disk setup for each option is described is following sections.
 

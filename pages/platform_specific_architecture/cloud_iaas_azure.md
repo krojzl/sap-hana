@@ -17,6 +17,10 @@ Description
   - [Azure: High Availability](#azure-high-availability)
   - [Azure: Disaster Recovery](#azure-disaster-recovery)
   - [Azure: Data Tiering Options](#azure-data-tiering-options)
+    - [Azure: Persistent Memory (NVRAM)](#azure-persistent-memory-nvram)
+    - [Azure: SAP HANA Native Storage Extensions (NSE)](#azure-sap-hana-native-storage-extensions-nse)
+    - [Azure: SAP HANA Extension Nodes](#azure-sap-hana-extension-nodes)
+    - [Azure: SAP HANA Dynamic Tiering (DT)](#azure-sap-hana-dynamic-tiering-dt)
   - [Azure: XSA](#azure-xsa)
 
 <!-- /TOC -->
@@ -157,9 +161,38 @@ Disaster Recovery for SAP HANA via SAP HANA System Replication is not infrastruc
 
 Link to generic content: [Module: Data Tiering Options](../generic_architecture/module_data_tiering.md#module-data-tiering-options)
 
-- what is supported what is not (matrix)
-- links to Azure documentation
-- modified pictures of storage setup (if required)
+Following data tiering options are supposed on Azure for traditional Virtual Machines (VMs) and HANA Large Instances (HLI):
+
+| Data Tiering Option                                                                       | Supported (VMs) | Supported (HLI)
+|:------------------------------------------------------------------------------------------|:----------------|:----------------
+| [Persistent Memory (NVRAM)](#azure-persistent-memory-nvram)                               | No              | No
+| [SAP HANA Native Storage Extensions (NSE)](#azure-sap-hana-native-storage-extensions-nse) | Yes             | Yes
+| [SAP HANA Extension Nodes](#azure-sap-hana-extension-nodes)                               | Yes             | Yes
+| [SAP HANA Dynamic Tiering (DT)](#azure-sap-hana-dynamic-tiering-dt)                       | Yes             | No
+
+### Azure: Persistent Memory (NVRAM)
+
+Microsoft Azure platform does not offer any instance types having NVRAM that are supported for productive SAP HANA usage.
+
+### Azure: SAP HANA Native Storage Extensions (NSE)
+
+SAP HANA Native Storage Extensions only need additional disk space compared to regular SAP HANA deployments. Microsoft Azure platform does allow to provision additional disks to both SAP HANA VMs and HANA Large Instances to provide additional capacity into existing filesystems. There is no change to the design of the storage layout.
+
+### Azure: SAP HANA Extension Nodes
+
+SAP HANA Extension Node implementation is based on provisioning additional SAP HANA node (with increased storage capacity) to existing SAP HANA system. Result is SAP HANA Scale-Out system where one of the nodes is designated as SAP HANA Extension Node. Storage layout is same as for regular SAP HANA nodes and it is visualized above in section [Azure: Storage Setup for SAP HANA Implementation](#azure-storage-setup-for-sap-hana-implementation).
+
+Additional Information:
+
+- [Azure: HANA Large Instances: Use SAP HANA data tiering and extension nodes](https://docs.microsoft.com/en-us/azure/virtual-machines/workloads/sap/hana-data-tiering-extension-nodes)
+
+### Azure: SAP HANA Dynamic Tiering (DT)
+
+SAP HANA Dynamic Tiering (DT) implementation in Microsoft Azure platform is based on provisioning additional VM for Dynamic Tiering component and connecting it to VM hosting SAP HANA instance, thus forming two-node distributed setup. Storage layout is identical to SAP HANA Scale-out setup as illustrated above in section [Azure: Storage Setup for SAP HANA Implementation](#azure-storage-setup-for-sap-hana-implementation).
+
+Additional Information:
+
+- [Azure: SAP HANA Dynamic Tiering 2.0 for Azure virtual machines](https://docs.microsoft.com/en-us/azure/virtual-machines/workloads/sap/hana-vm-operations#sap-hana-dynamic-tiering-20-for-azure-virtual-machines)
 
 ## Azure: XSA
 

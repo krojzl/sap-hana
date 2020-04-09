@@ -77,6 +77,19 @@ Please refer to [How to Contribute](#how-to-contribute) to understand how to con
 
 # Change Log
 
+## 2020-04-09
+
+- [Tomas Krojzl] Written initial content for following sections (Ready for Review):
+
+> 4) Platform Specific Architecture
+>    - IaaS Cloud: AWS
+>    - IaaS Cloud: Azure
+
+- [Tomas Krojzl] Updated initial content for following sections (Ready for Review):
+
+> 3) Generic SAP HANA Architecture
+>    - Module: Data Tiering Options
+
 ## 2019-12-19
 
 - [Tomas Krojzl] Written initial content for following sections (Ready for Review):

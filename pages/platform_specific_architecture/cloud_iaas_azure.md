@@ -1,7 +1,5 @@
 # Platform Specific Architecture for Azure (Microsoft Azure)
 
-Description
-
 - [Platform Specific Architecture for Azure (Microsoft Azure)](#platform-specific-architecture-for-azure-microsoft-azure)
   - [Azure: Overall Architecture](#azure-overall-architecture)
   - [Azure: Basic Architecture](#azure-basic-architecture)

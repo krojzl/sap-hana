@@ -1,7 +1,5 @@
 # Platform Specific Architecture for AWS (Amazon Web Services)
 
-Description
-
 - [Platform Specific Architecture for AWS (Amazon Web Services)](#platform-specific-architecture-for-aws-amazon-web-services)
   - [AWS: Overall Architecture](#aws-overall-architecture)
   - [AWS: Basic Architecture](#aws-basic-architecture)

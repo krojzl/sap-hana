@@ -77,7 +77,7 @@ Please refer to [How to Contribute](#how-to-contribute) to understand how to con
 
 # Change Log
 
-## 2020-04-09
+## 2020-05-13
 
 - [Tomas Krojzl] Written initial content for following sections (Ready for Review):
 
@@ -89,6 +89,14 @@ Please refer to [How to Contribute](#how-to-contribute) to understand how to con
 
 > 3) Generic SAP HANA Architecture
 >    - Module: Data Tiering Options
+
+## 2020-05-12
+
+- [Vladimir Kovarik] Updated sections _Azure: Virtual Hostname/IP_ in `pages/platform_specific_architecture/cloud_iaas_azure.md`
+
+## 2020-04-23
+
+- [Vladimir Kovarik] Updated sections _AWS: Virtual Hostname/IP_ in `pages/platform_specific_architecture/cloud_iaas_aws.md`
 
 ## 2019-12-19
 
@@ -1306,10 +1314,6 @@ Additional Information:
 
 # Platform Specific Architecture for AWS (Amazon Web Services)
 
-Description
-
-<!-- TOC -->
-
 - [Platform Specific Architecture for AWS (Amazon Web Services)](#platform-specific-architecture-for-aws-amazon-web-services)
   - [AWS: Overall Architecture](#aws-overall-architecture)
   - [AWS: Basic Architecture](#aws-basic-architecture)
@@ -1317,6 +1321,8 @@ Description
     - [AWS: Storage Setup for SAP HANA Implementation](#aws-storage-setup-for-sap-hana-implementation)
     - [AWS: Networking specifics for AWS Availability Zones](#aws-networking-specifics-for-aws-availability-zones)
   - [AWS: Virtual Hostname/IP](#aws-virtual-hostnameip)
+    - [AWS: Generic implementation steps](#aws-generic-implementation-steps)
+    - [AWS: Additional comments](#aws-additional-comments)
   - [AWS: High Availability](#aws-high-availability)
   - [AWS: Disaster Recovery](#aws-disaster-recovery)
   - [AWS: Data Tiering Options](#aws-data-tiering-options)
@@ -1325,8 +1331,6 @@ Description
     - [AWS: SAP HANA Extension Nodes](#aws-sap-hana-extension-nodes)
     - [AWS: SAP HANA Dynamic Tiering (DT)](#aws-sap-hana-dynamic-tiering-dt)
   - [AWS: XSA](#aws-xsa)
-
-<!-- /TOC -->
 
 ## AWS: Overall Architecture
 
@@ -1387,8 +1391,31 @@ Impact on implementation of Cluster IP in AWS is described in [AWS: High Availab
 
 Link to generic content: [Module: Virtual Hostname/IP](#module-virtual-hostnameip)
 
-- how to implement virtual IP - maybe additional elastic network interface?
-- reference to Instance Move and how to execute AWS specific steps (move elastic network interface?)
+This chapter describes recommended implementation of Virtual Hostname and Virtual IP for an SAP HANA installation on the AWS cloud.
+
+The implementation is based on assigning a _Secondary private IP address_ to an existing network interface of the AWS instance. A _Secondary private IP address_ can be easily reassigned to another AWS instance and so it can follow SAP HANA instance relocation. For more details see [AWS: Multiple IP Addresses](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/MultipleIP.html). This _Secondary private IP address_ is associated with the Virtual Hostname which is used during SAP HANA instance installation.
+
+### AWS: Generic implementation steps 
+
+- define Virtual IP (in the same subnet as the network interface) and Virtual Hostname for SAP HANA Instance
+- assign _Virtual IP_ as _Secondary private IP address_ to existing network interface (see [AWS: assign secondary private IP](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/MultipleIP.html#assignIP-existing))
+- configure OS to use _Virtual IP Address_ (e.g. [SUSE: Administration Guide - Configuring Multiple Addresses](https://documentation.suse.com/sles/12-SP4/single-html/SLES-admin/index.html#sec-basicnet-yast-configure-addresses))
+- make Virtual Hostname resolvable (e.g. updating `/etc/hosts`)
+- install SAP HANA instance with the _Virtual Hostname_ (see [SAP: Administration Guide - Default Host Names and Virtual Host Names](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/aa7e697ccf214852a283a75126c34370.html))
+
+**Note:** _Virtual IP_ can be be reassigned to another AWS instance thanks to option "_Allow reassignment_" of the network interface (see [AWS: assign a secondary private IPv4 address](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/MultipleIP.html#assignIP-existing))
+
+### AWS: Additional comments
+
+**SAP HANA inbound network communication**
+
+A network communication initiated from a remote system to the Virtual IP of SAP HANA instance is established and takes place between remote system IP and the Virtual IP (_Secondary private IP address_). 
+The _Primary private IP address_ on the same interface is not involved in this communication.
+
+**SAP HANA outbound network communication**
+
+In contrast to an inbound connection, when SAP HANA instance initiates a network connection to a remote system the _Primary private IP address_ is used as source IP instead of Virtual IP (_Secondary private IP address_).  
+If there is requirement to use Virtual IP as the source IP, it could be achieved by means of linux routing. The core of the idea is to add route specifying source address like `ip route add <network/mask> via <gateway> src <virtual_ip>` (see [Routing for multiple uplinks/providers](https://www.tldp.org/HOWTO/Adv-Routing-HOWTO/lartc.rpdb.multiple-links.html#AEN258)).
 
 ## AWS: High Availability
 
@@ -1462,10 +1489,6 @@ SAP HANA extended application services, advanced model (XSA) component is not in
 
 # Platform Specific Architecture for Azure (Microsoft Azure)
 
-Description
-
-<!-- TOC -->
-
 - [Platform Specific Architecture for Azure (Microsoft Azure)](#platform-specific-architecture-for-azure-microsoft-azure)
   - [Azure: Overall Architecture](#azure-overall-architecture)
   - [Azure: Basic Architecture](#azure-basic-architecture)
@@ -1476,6 +1499,8 @@ Description
       - [Azure: Storage Setup for SAP HANA Implementation - Azure NetApp Files](#azure-storage-setup-for-sap-hana-implementation---azure-netapp-files)
     - [Azure: Networking specifics for Azure Availability Zones](#azure-networking-specifics-for-azure-availability-zones)
   - [Azure: Virtual Hostname/IP](#azure-virtual-hostnameip)
+    - [Azure: Generic implementation steps](#azure-generic-implementation-steps)
+    - [Azure: Additional comments](#azure-additional-comments)
   - [Azure: High Availability](#azure-high-availability)
   - [Azure: Disaster Recovery](#azure-disaster-recovery)
   - [Azure: Data Tiering Options](#azure-data-tiering-options)
@@ -1484,8 +1509,6 @@ Description
     - [Azure: SAP HANA Extension Nodes](#azure-sap-hana-extension-nodes)
     - [Azure: SAP HANA Dynamic Tiering (DT)](#azure-sap-hana-dynamic-tiering-dt)
   - [Azure: XSA](#azure-xsa)
-
-<!-- /TOC -->
 
 ## Azure: Overall Architecture
 
@@ -1594,8 +1617,33 @@ Impact on implementation of Cluster IP in Azure is described in [Azure: High Ava
 
 Link to generic content: [Module: Virtual Hostname/IP](#module-virtual-hostnameip)
 
-- how to implement virtual IP - maybe additional network interface?
-- reference to Instance Move and how to execute Azure specific steps (move network interface?)
+This chapter describes recommended implementation of Virtual Hostname and Virtual IP for an SAP HANA installation on the Azure cloud.
+
+The implementation is based on assigning a _Secondary static private IP address_ to an existing network interface of the Azure Virtual Machine (VM). A _Secondary static private IP address_ can be reassigned to another VM and so it can follow SAP HANA instance relocation. For more details see [Azure: Assign multiple IP addresses](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-multiple-ip-addresses-portal). This _Secondary static private IP address_ is associated with the Virtual Hostname which is used during SAP HANA instance installation.
+
+### Azure: Generic implementation steps 
+
+- define Virtual IP (in the same subnet as the network interface) and Virtual Hostname for SAP HANA Instance
+- assign _Virtual IP_ as _Secondary static private IP address_ to existing network interface (see [Azure: Add IP addresses to a VM](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-multiple-ip-addresses-portal#add)
+- configure OS to use _Virtual IP Address_ 
+  - e.g. [Azure: Add IP addresses to a VM operating system](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-multiple-ip-addresses-portal#os-config)
+  - e.g. [SUSE: Administration Guide - Configuring Multiple Addresses](https://documentation.suse.com/sles/12-SP4/single-html/SLES-admin/index.html#sec-basicnet-yast-configure-addresses))
+- make Virtual Hostname resolvable (e.g. updating `/etc/hosts`)
+- install SAP HANA instance with the _Virtual Hostname_ (see [SAP: Administration Guide - Default Host Names and Virtual Host Names](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.04/en-US/aa7e697ccf214852a283a75126c34370.html))
+
+**Note:** to reassign the _Virtual IP_ to another VM you need first to remove it on the existing VM and after that to assign it on the new VM (see [Azure: Remove IP addresses](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-network-interface-addresses#remove-ip-addresses))
+
+### Azure: Additional comments
+
+**SAP HANA inbound network communication**
+
+A network communication initiated from a remote system to the Virtual IP of SAP HANA instance is established and takes place between remote system IP and the Virtual IP (_Secondary static private IP address_). 
+The _Primary private IP address_ on the same interface is not involved in this communication.
+
+**SAP HANA outbound network communication**
+
+In contrast to an inbound connection, when SAP HANA instance initiates a network connection to a remote system the _Primary private IP address_ is used as source IP instead of Virtual IP (_Secondary static private IP address_).  
+If there is requirement to use Virtual IP as the source IP, it could be achieved by means of linux routing. The core of the idea is to add route specifying source address like `ip route add <network/mask> via <gateway> src <virtual_ip>` (see [Routing for multiple uplinks/providers](https://www.tldp.org/HOWTO/Adv-Routing-HOWTO/lartc.rpdb.multiple-links.html#AEN258)).
 
 ## Azure: High Availability
 

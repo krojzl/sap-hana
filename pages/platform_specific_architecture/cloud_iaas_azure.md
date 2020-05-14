@@ -10,8 +10,8 @@
       - [Azure: Storage Setup for SAP HANA Implementation - Azure NetApp Files](#azure-storage-setup-for-sap-hana-implementation---azure-netapp-files)
     - [Azure: Networking specifics for Azure Availability Zones](#azure-networking-specifics-for-azure-availability-zones)
   - [Azure: Virtual Hostname/IP](#azure-virtual-hostnameip)
-    - [Generic implementation steps](#generic-implementation-steps)
-    - [Additional comments](#additional-comments)
+    - [Azure: Generic implementation steps](#azure-generic-implementation-steps)
+    - [Azure: Additional comments](#azure-additional-comments)
   - [Azure: High Availability](#azure-high-availability)
   - [Azure: Disaster Recovery](#azure-disaster-recovery)
   - [Azure: Data Tiering Options](#azure-data-tiering-options)
@@ -132,7 +132,7 @@ This chapter describes recommended implementation of Virtual Hostname and Virtua
 
 The implementation is based on assigning a _Secondary static private IP address_ to an existing network interface of the Azure Virtual Machine (VM). A _Secondary static private IP address_ can be reassigned to another VM and so it can follow SAP HANA instance relocation. For more details see [Azure: Assign multiple IP addresses](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-multiple-ip-addresses-portal). This _Secondary static private IP address_ is associated with the Virtual Hostname which is used during SAP HANA instance installation.
 
-### Generic implementation steps 
+### Azure: Generic implementation steps 
 
 - define Virtual IP (in the same subnet as the network interface) and Virtual Hostname for SAP HANA Instance
 - assign _Virtual IP_ as _Secondary static private IP address_ to existing network interface (see [Azure: Add IP addresses to a VM](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-multiple-ip-addresses-portal#add)
@@ -144,7 +144,7 @@ The implementation is based on assigning a _Secondary static private IP address_
 
 **Note:** to reassign the _Virtual IP_ to another VM you need first to remove it on the existing VM and after that to assign it on the new VM (see [Azure: Remove IP addresses](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-network-interface-addresses#remove-ip-addresses))
 
-### Additional comments
+### Azure: Additional comments
 
 **SAP HANA inbound network communication**
 

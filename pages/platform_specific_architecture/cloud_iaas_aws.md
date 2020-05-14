@@ -7,8 +7,8 @@
     - [AWS: Storage Setup for SAP HANA Implementation](#aws-storage-setup-for-sap-hana-implementation)
     - [AWS: Networking specifics for AWS Availability Zones](#aws-networking-specifics-for-aws-availability-zones)
   - [AWS: Virtual Hostname/IP](#aws-virtual-hostnameip)
-    - [Generic implementation steps](#generic-implementation-steps)
-    - [Additional comments](#additional-comments)
+    - [AWS: Generic implementation steps](#aws-generic-implementation-steps)
+    - [AWS: Additional comments](#aws-additional-comments)
   - [AWS: High Availability](#aws-high-availability)
   - [AWS: Disaster Recovery](#aws-disaster-recovery)
   - [AWS: Data Tiering Options](#aws-data-tiering-options)
@@ -81,7 +81,7 @@ This chapter describes recommended implementation of Virtual Hostname and Virtua
 
 The implementation is based on assigning a _Secondary private IP address_ to an existing network interface of the AWS instance. A _Secondary private IP address_ can be easily reassigned to another AWS instance and so it can follow SAP HANA instance relocation. For more details see [AWS: Multiple IP Addresses](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/MultipleIP.html). This _Secondary private IP address_ is associated with the Virtual Hostname which is used during SAP HANA instance installation.
 
-### Generic implementation steps 
+### AWS: Generic implementation steps 
 
 - define Virtual IP (in the same subnet as the network interface) and Virtual Hostname for SAP HANA Instance
 - assign _Virtual IP_ as _Secondary private IP address_ to existing network interface (see [AWS: assign secondary private IP](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/MultipleIP.html#assignIP-existing))
@@ -91,7 +91,7 @@ The implementation is based on assigning a _Secondary private IP address_ to an 
 
 **Note:** _Virtual IP_ can be be reassigned to another AWS instance thanks to option "_Allow reassignment_" of the network interface (see [AWS: assign a secondary private IPv4 address](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/MultipleIP.html#assignIP-existing))
 
-### Additional comments
+### AWS: Additional comments
 
 **SAP HANA inbound network communication**
 

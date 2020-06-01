@@ -9,6 +9,8 @@
   - [AWS: Virtual Hostname/IP](#aws-virtual-hostnameip)
     - [AWS: Generic implementation steps](#aws-generic-implementation-steps)
     - [AWS: Additional comments](#aws-additional-comments)
+      - [AWS: SAP HANA inbound network communication](#aws-sap-hana-inbound-network-communication)
+      - [AWS: SAP HANA outbound network communication](#aws-sap-hana-outbound-network-communication)
   - [AWS: High Availability](#aws-high-availability)
   - [AWS: Disaster Recovery](#aws-disaster-recovery)
   - [AWS: Data Tiering Options](#aws-data-tiering-options)
@@ -81,7 +83,7 @@ This chapter describes recommended implementation of Virtual Hostname and Virtua
 
 The implementation is based on assigning a _Secondary private IP address_ to an existing network interface of the AWS instance. A _Secondary private IP address_ can be easily reassigned to another AWS instance and so it can follow SAP HANA instance relocation. For more details see [AWS: Multiple IP Addresses](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/MultipleIP.html). This _Secondary private IP address_ is associated with the Virtual Hostname which is used during SAP HANA instance installation.
 
-### AWS: Generic implementation steps 
+### AWS: Generic implementation steps
 
 - define Virtual IP (in the same subnet as the network interface) and Virtual Hostname for SAP HANA Instance
 - assign _Virtual IP_ as _Secondary private IP address_ to existing network interface (see [AWS: assign secondary private IP](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/MultipleIP.html#assignIP-existing))
@@ -93,12 +95,12 @@ The implementation is based on assigning a _Secondary private IP address_ to an 
 
 ### AWS: Additional comments
 
-**SAP HANA inbound network communication**
+#### AWS: SAP HANA inbound network communication
 
-A network communication initiated from a remote system to the Virtual IP of SAP HANA instance is established and takes place between remote system IP and the Virtual IP (_Secondary private IP address_). 
+A network communication initiated from a remote system to the Virtual IP of SAP HANA instance is established and takes place between remote system IP and the Virtual IP (_Secondary private IP address_).
 The _Primary private IP address_ on the same interface is not involved in this communication.
 
-**SAP HANA outbound network communication**
+#### AWS: SAP HANA outbound network communication
 
 In contrast to an inbound connection, when SAP HANA instance initiates a network connection to a remote system the _Primary private IP address_ is used as source IP instead of Virtual IP (_Secondary private IP address_).  
 If there is requirement to use Virtual IP as the source IP, it could be achieved by means of linux routing. The core of the idea is to add route specifying source address like `ip route add <network/mask> via <gateway> src <virtual_ip>` (see [Routing for multiple uplinks/providers](https://www.tldp.org/HOWTO/Adv-Routing-HOWTO/lartc.rpdb.multiple-links.html#AEN258)).

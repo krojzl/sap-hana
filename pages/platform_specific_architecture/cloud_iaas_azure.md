@@ -12,6 +12,8 @@
   - [Azure: Virtual Hostname/IP](#azure-virtual-hostnameip)
     - [Azure: Generic implementation steps](#azure-generic-implementation-steps)
     - [Azure: Additional comments](#azure-additional-comments)
+      - [Azure: SAP HANA inbound network communication](#azure-sap-hana-inbound-network-communication)
+      - [Azure: SAP HANA outbound network communication](#azure-sap-hana-outbound-network-communication)
   - [Azure: High Availability](#azure-high-availability)
   - [Azure: Disaster Recovery](#azure-disaster-recovery)
   - [Azure: Data Tiering Options](#azure-data-tiering-options)
@@ -97,7 +99,7 @@ Note: Cost conscious storage configuration is available for use, however, it is 
 
 Instance specific sizing recommendations are available at [Azure: Azure Ultra disk](https://docs.microsoft.com/en-us/azure/virtual-machines/workloads/sap/hana-vm-operations-storage#azure-ultra-disk-storage-configuration-for-sap-hana).
 
-Note: Please be aware about Ultra disk limitations as described in [Azure: Ultra disk - GA scope and limitations](https://docs.microsoft.com/en-gb/azure/virtual-machines/windows/disks-types#ga-scope-and-limitations).
+Note: Please be aware about Ultra disk limitations as described in [Azure: Ultra disk - GA scope and limitations](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/disks-types#ga-scope-and-limitations).
 
 #### Azure: Storage Setup for SAP HANA Implementation - Azure NetApp Files
 
@@ -114,7 +116,7 @@ Note: Please be aware about Ultra disk limitations as described in [Azure: Ultra
 
 Instance specific sizing recommendations are available at [Azure: Azure NetApp Files](https://docs.microsoft.com/en-us/azure/virtual-machines/workloads/sap/hana-vm-operations-storage#nfs-v41-volumes-on-azure-netapp-files).
 
-Note: Please be aware about Azure NetApp Files limitations as described in [Azure: Azure NetApp Files - Important considerations](https://docs.microsoft.com/en-gb/azure/virtual-machines/workloads/sap/sap-hana-scale-out-standby-netapp-files-suse#important-considerations).
+Note: Please be aware about Azure NetApp Files limitations as described in [Azure: Azure NetApp Files - Important considerations](https://docs.microsoft.com/en-us/azure/virtual-machines/workloads/sap/sap-hana-scale-out-standby-netapp-files-suse#important-considerations).
 
 Key limitation is fact that Azure NetApp Files are not Availability Zone aware and can cause performance degradation when not deployed in close proximity (for example following High Availability takeover).
 
@@ -132,11 +134,11 @@ This chapter describes recommended implementation of Virtual Hostname and Virtua
 
 The implementation is based on assigning a _Secondary static private IP address_ to an existing network interface of the Azure Virtual Machine (VM). A _Secondary static private IP address_ can be reassigned to another VM and so it can follow SAP HANA instance relocation. For more details see [Azure: Assign multiple IP addresses](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-multiple-ip-addresses-portal). This _Secondary static private IP address_ is associated with the Virtual Hostname which is used during SAP HANA instance installation.
 
-### Azure: Generic implementation steps 
+### Azure: Generic implementation steps
 
 - define Virtual IP (in the same subnet as the network interface) and Virtual Hostname for SAP HANA Instance
 - assign _Virtual IP_ as _Secondary static private IP address_ to existing network interface (see [Azure: Add IP addresses to a VM](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-multiple-ip-addresses-portal#add)
-- configure OS to use _Virtual IP Address_ 
+- configure OS to use _Virtual IP Address_
   - e.g. [Azure: Add IP addresses to a VM operating system](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-multiple-ip-addresses-portal#os-config)
   - e.g. [SUSE: Administration Guide - Configuring Multiple Addresses](https://documentation.suse.com/sles/12-SP4/single-html/SLES-admin/index.html#sec-basicnet-yast-configure-addresses))
 - make Virtual Hostname resolvable (e.g. updating `/etc/hosts`)
@@ -146,12 +148,12 @@ The implementation is based on assigning a _Secondary static private IP address_
 
 ### Azure: Additional comments
 
-**SAP HANA inbound network communication**
+#### Azure: SAP HANA inbound network communication
 
-A network communication initiated from a remote system to the Virtual IP of SAP HANA instance is established and takes place between remote system IP and the Virtual IP (_Secondary static private IP address_). 
+A network communication initiated from a remote system to the Virtual IP of SAP HANA instance is established and takes place between remote system IP and the Virtual IP (_Secondary static private IP address_).
 The _Primary private IP address_ on the same interface is not involved in this communication.
 
-**SAP HANA outbound network communication**
+#### Azure: SAP HANA outbound network communication
 
 In contrast to an inbound connection, when SAP HANA instance initiates a network connection to a remote system the _Primary private IP address_ is used as source IP instead of Virtual IP (_Secondary static private IP address_).  
 If there is requirement to use Virtual IP as the source IP, it could be achieved by means of linux routing. The core of the idea is to add route specifying source address like `ip route add <network/mask> via <gateway> src <virtual_ip>` (see [Routing for multiple uplinks/providers](https://www.tldp.org/HOWTO/Adv-Routing-HOWTO/lartc.rpdb.multiple-links.html#AEN258)).

@@ -12,6 +12,10 @@
       - [AWS: SAP HANA inbound network communication](#aws-sap-hana-inbound-network-communication)
       - [AWS: SAP HANA outbound network communication](#aws-sap-hana-outbound-network-communication)
   - [AWS: High Availability](#aws-high-availability)
+    - [AWS: High Availability across Availability Zones](#aws-high-availability-across-availability-zones)
+      - [AWS: Which Availability Zone to use](#aws-which-availability-zone-to-use)
+    - [AWS: Available Fencing mechanism](#aws-available-fencing-mechanism)
+    - [AWS: Implementation of Cluster IP](#aws-implementation-of-cluster-ip)
   - [AWS: Disaster Recovery](#aws-disaster-recovery)
   - [AWS: Data Tiering Options](#aws-data-tiering-options)
     - [AWS: Persistent Memory (NVRAM)](#aws-persistent-memory-nvram)
@@ -109,18 +113,55 @@ If there is requirement to use Virtual IP as the source IP, it could be achieved
 
 Link to generic content: [Module: High Availability](../generic_architecture/module_high_availability.md#module-high-availability)
 
-- link to list of Availability Zones in AWS
-- comment that it is important to measure AZ latency via niping (I will add this as new section in general part)
-- fencing mechanism (options, recommendation)
-- how to implement cluster IP (also referred as overlay IP)
-  - relation to different subnets per AZ
-  - entry in VPC routing table
-  - it is managed by cluster (need to assign IAM roles to VM)
-  - need to disable source/destination check on interface
-- links to AWS/SUSE/RHEL documentation
-- how to modify cluster to have active/active
-- how to modify cluster to have tenant specific cluster IPs
-- anything else?
+### AWS: High Availability across Availability Zones
+
+Best practice for deploying SAP HANA is to stretch High Availability cluster across Availability Zones. Each AWS Availability Zone is physically separate infrastructure, therefore deploying High Availability across Availability Zones ensures that there is no shared single-point-of-failure (SPOF) between primary and secondary SAP HANA system. This approach is significantly increasing overall resiliency of the High Availability of the solution.
+
+List of existing Availability Zones for individual AWS Regions is available here: [AWS: Regions and Availability Zones](https://aws.amazon.com/about-aws/global-infrastructure/regions_az).
+
+#### AWS: Which Availability Zone to use
+
+Most critical factor for selecting Availability Zones is network latency. Latency between individual Availability Zones can significantly differ and therefore it is important to measure network latency using SAP `niping` tool (see [SAP Note 500235: Network Diagnosis with NIPING](https://launchpad.support.sap.com/#/notes/500235) for additional information) and select Availability Zones with minimal latency.
+
+Furthermore it is important to note that internal numbering of Availability Zones is specific for each individual AWS account. Therefore the network latency test must be performed in given account. For additional information please see [AWS: Regions, Availability Zones, and Local Zones - Availability Zones](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-availability-zones).
+
+Last thing to consider is whether desired instance types are available inside selected Availability Zones as not all Availability Zones are offering all instance types.
+
+### AWS: Available Fencing mechanism
+
+AWS is using IPMI-like Fencing (see [Module: High Availability - IPMI-like Fencing](../generic_architecture/module_high_availability.md#ipmi-like-fencing) for additional details). SBD (Storage Based Death) Fencing is not available in AWS.
+
+Fencing agent source code is available here: [external/ec2](https://github.com/ClusterLabs/cluster-glue/blob/master/lib/plugins/stonith/external/ec2). Behind the scenes it is using [StopInstances](https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_StopInstances.html) API call with `force` option. This will hard stop EC2 instance without gracefully stopping the Operating System.
+
+Following are most important prerequisites for `external/ec2` fencing mechanism to work properly:
+
+- EC2 instances need to be properly tagged - tags are used by fencing agent to find correct instance to stop (see [SUSE: Tagging the EC2 Instances](https://documentation.suse.com/sbp/all/html/SLES4SAP-hana-sr-guide-PerfOpt-12_AWS/index.html#_tagging_the_ec2_instances))
+- Configure AWS CLI - fencing agent is dependent on AWS CLI which needs to be configured properly (see [SUSE: Creating an AWS CLI Profile on Both EC2 Instances](https://documentation.suse.com/sbp/all/html/SLES4SAP-hana-sr-guide-PerfOpt-12_AWS/index.html#_creating_an_aws_cli_profile_on_both_ec2_instances))
+- Configure HTTP Proxies (or use NAT gateway) to access AWS APIs over internet (see [SUSE: Configure HTTP Proxies](https://documentation.suse.com/sbp/all/html/SLES4SAP-hana-sr-guide-PerfOpt-12_AWS/index.html#_configure_http_proxies))
+- Create STONITH policy and attach it as instance role (see [SUSE: STONITH Policy](https://documentation.suse.com/sbp/all/html/SLES4SAP-hana-sr-guide-PerfOpt-12_AWS/index.html#_stonith_policy))
+
+Please see [SUSE: SAP HANA High Availability Cluster for the AWS Cloud - Setup Guide - Prerequisites for the AWS-Specific HA Installation](https://documentation.suse.com/sbp/all/html/SLES4SAP-hana-sr-guide-PerfOpt-12_AWS/index.html#_prerequisites_for_the_aws_specific_ha_installation) for complete list of prerequisites.
+
+Additional Information:
+
+- [SUSE: SAP HANA High Availability Cluster for the AWS Cloud - Setup Guide](https://documentation.suse.com/sbp/all/html/SLES4SAP-hana-sr-guide-PerfOpt-12_AWS/index.html)
+- [Red Hat: Configure SAP HANA System Replication in Pacemaker on Amazon Web Services](https://access.redhat.com/articles/3569621)
+
+### AWS: Implementation of Cluster IP
+
+Traditional implementation of Cluster IP (not applicable to AWS) is based on ARP cache invalidation. On primary server Pacemaker Cluster will define Cluster IP address by using command `ip addr add` combined with ARP cache invalidation via `arping` (see [ClusterLabs / resource-agents / heartbeat / IPaddr2](https://github.com/ClusterLabs/resource-agents/blob/5b18c216eae233751b243301255ae610cd49e52c/heartbeat/IPaddr2#L636)). During the takeover the Pacemaker Cluster will remove Cluster IP address from old primary server by using command `ip addr del` and it will recreate it on new primary server using commands mentioned above. The key requirement here is that both primary and secondary server are in same subnet so that Cluster IP address can be moved between them.
+
+In AWS each Availability Zone is having its own separate subnet and it is not possible to stretch one subnet across multiple Availability Zones. Therefore, different mechanism is required. AWS implementation of Cluster IP address is based on "Overlay IP" address concept. It is defined as additional entry in VPC routing table entry that is managed directly by Pacemaker Cluster. This entry is forwarding all packets sent to Overlay IP (third IP address in its own separate subnet) to the IP address of either primary or secondary server. During cluster takeover this VPC routing table entry is updated by Pacemaker cluster via AWS Command Line Interface (CLI) utility to point to new primary server. This concept is more in detail explained here:
+
+- [AWS: SAP on AWS High Availability with Overlay IP Address Routing](https://docs.aws.amazon.com/sap/latest/sap-hana/sap-ha-overlay-ip.html)
+- [IP Failover with Overlay IP Addresses](http://www.scalingbits.com/aws/ipfailover/overlay)
+
+In order to ensure that Pacemaker cluster is able to properly manage the VPC route table adjustments, it needs proper IAM access to be assigned to given VM. Technical details are explained in following documentation:
+
+- [SUSE: SAP HANA High Availability Cluster for the AWS Cloud - Setup Guide](https://documentation.suse.com/sbp/all/html/SLES4SAP-hana-sr-guide-PerfOpt-12_AWS/index.html#_aws_roles_and_policies)
+- [Red Hat: Configure SAP HANA System Replication in Pacemaker on Amazon Web Services](https://access.redhat.com/articles/3569621)
+
+Third requirement for this concept to work is to disable "Source/Destination Check" for given Network Interface as explained in above mentioned guides. This is to ensure that packets are not discarded based on using Cluster IP address. For additional information please see [AWS: Disabling source/destination checks](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_NAT_Instance.html#EIP_Disable_SrcDestCheck)).
 
 ## AWS: Disaster Recovery
 

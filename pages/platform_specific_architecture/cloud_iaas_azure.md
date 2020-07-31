@@ -15,6 +15,10 @@
       - [Azure: SAP HANA inbound network communication](#azure-sap-hana-inbound-network-communication)
       - [Azure: SAP HANA outbound network communication](#azure-sap-hana-outbound-network-communication)
   - [Azure: High Availability](#azure-high-availability)
+    - [Azure: High Availability across Availability Zones](#azure-high-availability-across-availability-zones)
+      - [Azure: Which Availability Zone to use](#azure-which-availability-zone-to-use)
+    - [Azure: Available Fencing mechanism](#azure-available-fencing-mechanism)
+    - [Azure: Implementation of Cluster IP](#azure-implementation-of-cluster-ip)
   - [Azure: Disaster Recovery](#azure-disaster-recovery)
   - [Azure: Data Tiering Options](#azure-data-tiering-options)
     - [Azure: Persistent Memory (NVRAM)](#azure-persistent-memory-nvram)
@@ -162,17 +166,51 @@ If there is requirement to use Virtual IP as the source IP, it could be achieved
 
 Link to generic content: [Module: High Availability](../generic_architecture/module_high_availability.md#module-high-availability)
 
-- link to list of Availability Zones in Azure
-- comment that it is important to measure AZ latency via niping (I will add this as new section in general part)
-- fencing mechanism (options, recommendation)
-- how to implement cluster IP (as load balancer)
-  - explain why we need load balancer (no ARP invalidations)
-  - it is managed by cluster (explain how - but opening port on active node)
-  - link to [Video](https://youtu.be/axyPUGS7Wu4) and [PDF](https://www.suse.com/media/presentation/TUT1134_Microsoft_Azure_and_SUSE_HAE%20_When_Availability_Matters.pdf)
-- links to Azure/SUSE/RHEL documentation
-- how to modify cluster to have active/active
-- how to modify cluster to have tenant specific cluster IPs
-- anything else?
+### Azure: High Availability across Availability Zones
+
+Best practice for deploying SAP HANA is to stretch High Availability cluster across Availability Zones. Each Azure Availability Zone is physically separate infrastructure, therefore deploying High Availability across Availability Zones ensures that there is no shared single-point-of-failure (SPOF) between primary and secondary SAP HANA system. This approach is significantly increasing overall resiliency of the High Availability of the solution.
+
+List of existing Availability Zones for individual Azure Regions is available here: [Azure: Azure geographies](https://azure.microsoft.com/en-us/global-infrastructure/geographies/).
+
+#### Azure: Which Availability Zone to use
+
+Most critical factor for selecting Availability Zones is network latency. Latency between individual Availability Zones can significantly differ and therefore it is important to measure network latency using SAP `niping` tool (see [SAP Note 500235: Network Diagnosis with NIPING](https://launchpad.support.sap.com/#/notes/500235) for additional information) and select Availability Zones with minimal latency.
+
+Furthermore, it is important to note that internal numbering of Availability Zones is specific for each individual Azure account. Therefore, the network latency test must be performed in given account. For additional information please see [Azure: Regions and Availability Zones in Azure - Availability Zones](https://docs.microsoft.com/en-us/azure/availability-zones/az-overview#availability-zones).
+
+Last thing to consider is whether desired VM sizes are available inside selected Availability Zones as not all Availability Zones are offering all VM sizes.
+
+### Azure: Available Fencing mechanism
+
+Azure is using slightly different fencing mechanism based on Linux distribution that is used:
+
+- Red Hat Enterprise Linux (RHEL) is using IPMI-like Fencing (see [Module: High Availability - IPMI-like Fencing](../generic_architecture/module_high_availability.md#ipmi-like-fencing) for additional details) and SBD (Storage Based Death) Fencing is not available
+- SUSE Linux Enterprise Server (SLES) is using combination of IPMI-like Fencing and SBD (Storage Based Death) Fencing
+
+Fencing agent source code is available here: [fence_azure_arm](https://github.com/ClusterLabs/fence-agents/blob/master/agents/azure_arm/fence_azure_arm.py). Behind the scenes it is using Azure SDK for Python call `azure_fence.set_network_state`. This will hard stop Azure VM without gracefully stopping the Operating System.
+
+Prerequisites for fencing mechanism to work properly are documented here:
+
+- [Azure: Setting up Pacemaker on SUSE Linux Enterprise Server in Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/workloads/sap/high-availability-guide-suse-pacemaker)
+- [Azure: Setting up Pacemaker on Red Hat Enterprise Linux in Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/workloads/sap/high-availability-guide-rhel-pacemaker)
+
+Additional Information:
+
+- [Azure: High availability of SAP HANA on Azure VMs on SUSE Linux Enterprise Server](https://docs.microsoft.com/en-us/azure/virtual-machines/workloads/sap/sap-hana-high-availability)
+- [Azure: High availability of SAP HANA on Azure VMs on Red Hat Enterprise Linux](https://docs.microsoft.com/en-us/azure/virtual-machines/workloads/sap/sap-hana-high-availability-rhel)
+
+### Azure: Implementation of Cluster IP
+
+Traditional implementation of Cluster IP (not applicable to Azure) is covered in section [Module: High Availability - Typical Cluster IP Implementation](../generic_architecture/module_high_availability.md#module-high-availability#typical-cluster-ip-implementation).
+
+Azure Software Defined Networking (SDN) is not supporting ARP cache updates, that are required for traditional implementation of Cluster IP. Therefore, although subnets are stretched across Availability Zones, different mechanism is required. Azure implementation of Cluster IP address is based on Azure Network Load Balancer, that is forwarding all packets sent to Load Balancer IP (third IP address) to the IP address of either primary or secondary server, depending on wherever "health probe port" is active.
+
+This "health probe port" is managed by Pacemaker cluster and is implemented as `nc` (RHEL) or `socat` (SLES) command opening dummy port to signal to Load Balancer which VM is currently active (see [ClusterLabs / resource-agents / heartbeat / azure-lb](https://github.com/ClusterLabs/resource-agents/blob/master/heartbeat/azure-lb#L111)). During cluster takeover the Pacemaker cluster will close the "health probe port" on old primary VM and will open it on new primary VM. This will be detected by Azure Load Balancer, which will start forwarding all traffic to new primary VM.
+
+Additional Information:
+
+- [YouTube: TUT1134: Microsoft Azure and SUSE HAE When Availability Matters](https://youtu.be/axyPUGS7Wu4)
+- [PDF: TUT1134: Microsoft Azure and SUSE HAE When Availability Matters](https://www.suse.com/media/presentation/TUT1134_Microsoft_Azure_and_SUSE_HAE%20_When_Availability_Matters.pdf)
 
 ## Azure: Disaster Recovery
 

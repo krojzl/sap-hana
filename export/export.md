@@ -1738,7 +1738,7 @@ Additional Information:
 
 ### Azure: Implementation of Cluster IP
 
-Traditional implementation of Cluster IP (not applicable to Azure) is covered in section [Module: High Availability - Typical Cluster IP Implementation](#module-high-availability#typical-cluster-ip-implementation).
+Traditional implementation of Cluster IP (not applicable to Azure) is covered in section [Module: High Availability - Typical Cluster IP Implementation](#typical-cluster-ip-implementation).
 
 Azure Software Defined Networking (SDN) is not supporting ARP cache updates, that are required for traditional implementation of Cluster IP. Therefore, although subnets are stretched across Availability Zones, different mechanism is required. Azure implementation of Cluster IP address is based on Azure Network Load Balancer, that is forwarding all packets sent to Load Balancer IP (third IP address) to the IP address of either primary or secondary server, depending on wherever "health probe port" is active.
 

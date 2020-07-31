@@ -62,10 +62,10 @@ Basic steps are following:
    - On-premise: VMware
    - On-premise: IBM Power
 5. Operational Procedures
-   - [High Availability (HA) Operation](pages/operational_procedures/process_ha_operation.md#high-availability-ha-operation)
-   - [Disaster Recovery (DR) Operation](pages/operational_procedures/process_dr_operation.md#disaster-recovery-dr-operation)
-   - [SAP HANA Instance Move](pages/operational_procedures/process_instance_move.md#sap-hana-instance-move)
-   - [SAP HANA Tenant Move](pages/operational_procedures/process_tenant_move.md#sap-hana-tenant-move)
+   - High Availability (HA) Operation
+   - Disaster Recovery (DR) Operation
+   - SAP HANA Instance Move
+   - SAP HANA Tenant Move
 6. Additional Information
    - SAP HANA: Network Latency Requirements
    - SAP HANA: Stacking Options (MCOD, MCOS, MDC)

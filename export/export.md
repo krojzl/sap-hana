@@ -62,10 +62,10 @@ Basic steps are following:
    - On-premise: VMware
    - On-premise: IBM Power
 5. Operational Procedures
-   - [High Availability (HA) Operation](#high-availability-ha-operation)
-   - [Disaster Recovery (DR) Operation](#disaster-recovery-dr-operation)
-   - [SAP HANA Instance Move](#sap-hana-instance-move)
-   - [SAP HANA Tenant Move](#sap-hana-tenant-move)
+   - High Availability (HA) Operation
+   - Disaster Recovery (DR) Operation
+   - SAP HANA Instance Move
+   - SAP HANA Tenant Move
 6. Additional Information
    - SAP HANA: Network Latency Requirements
    - SAP HANA: Stacking Options (MCOD, MCOS, MDC)
@@ -1797,101 +1797,4 @@ Additional Information:
 Link to generic content: [Module: SAP XSA](#module-sap-xsa)
 
 SAP HANA extended application services, advanced model (XSA) component is not infrastructure dependent.
-
-# High Availability (HA) Operation
-
-Description
-
-<!-- TOC -->
-
-- [High Availability (HA) Operation](#high-availability-ha-operation)
-  - [HA Operation Overview](#ha-operation-overview)
-  - [Process: DR_Step1](#process-drstep1)
-
-<!-- /TOC -->
-
-## HA Operation Overview
-
-- introduction and overview of processes
-  - failover from failed primary
-  - reconnecting old primary as new secondary
-  - maintenance
-  - NZDT
-  - other?
-
-## Process: DR_Step1
-
-# Disaster Recovery (DR) Operation
-
-Description
-
-<!-- TOC -->
-
-- [Disaster Recovery (DR) Operation](#disaster-recovery-dr-operation)
-  - [DR Operation Overview](#dr-operation-overview)
-  - [Process: HA_Step1](#process-hastep1)
-
-<!-- /TOC -->
-
-## DR Operation Overview
-
-- introduction and overview of processes
-  - reconnecting DR after failover of HA
-  - failover to DR locations
-  - other?
-
-## Process: HA_Step1
-
-# SAP HANA Instance Move
-
-Description
-
-<!-- TOC -->
-
-- [SAP HANA Instance Move](#sap-hana-instance-move)
-  - [SAP HANA Instance Move Overview](#sap-hana-instance-move-overview)
-  - [Process: IM_Step1](#process-imstep1)
-
-<!-- /TOC -->
-
-## SAP HANA Instance Move Overview
-
-- need to mention prerequisite to have tenant specific Virtual IP
-
-- reference to infra specific (aws/azure/ibmcloud) documents for instance move commands (depends in infra implementation)
-
-- introduction and overview of steps
-  - procedure how to add Virtual IP
-  - procedure how to move to new host
-  - other?
-
-- how to execute in cluster setup
-
-## Process: IM_Step1
-
-# SAP HANA Tenant Move
-
-Description
-
-<!-- TOC -->
-
-- [SAP HANA Tenant Move](#sap-hana-tenant-move)
-  - [SAP HANA Tenant Move Overview](#sap-hana-tenant-move-overview)
-  - [Process: TM_Step1](#process-tmstep1)
-
-<!-- /TOC -->
-
-## SAP HANA Tenant Move Overview
-
-- need to mention prerequisite to have tenant specific Cluster IPs
-- need to mention can be implemented even without HA
-
-- reference to infra specific (aws/azure/ibmcloud) documents for tenant move commands (depends in infra implementation)
-
-- introduction and overview of steps
-  - steps
-
-- how to execute in cluster setup (add resource, remove resource)
-
-## Process: TM_Step1
 

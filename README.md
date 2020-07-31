@@ -57,7 +57,7 @@ Basic steps are following:
 4. Platform Specific Architecture
    - [Cloud IaaS: AWS](pages/platform_specific_architecture/cloud_iaas_aws.md#platform-specific-architecture-for-aws-amazon-web-services)
    - [Cloud IaaS: Azure](pages/platform_specific_architecture/cloud_iaas_azure.md#platform-specific-architecture-for-azure-microsoft-azure)
-   - [Cloud IaaS: IBM Cloud](pages/platform_specific_architecture/cloud_iaas_ibmcloud.md#platform-specific-architecture-for-ibm-cloud)
+   - Cloud IaaS: IBM Cloud
    - Cloud IaaS: Google
    - On-premise: VMware
    - On-premise: IBM Power
